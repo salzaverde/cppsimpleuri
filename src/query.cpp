@@ -19,18 +19,17 @@ namespace salzaverde {
 			std::string queryString = query_prefix;
 			auto it = _params.begin();
 			queryString += it->first + "=" + it->second;
-			
 			while(++it != _params.end()) {
 				queryString += "&" + it->first + "=" + it->second;
 			}
 			return queryString;
 		}
 		
-		virtual std::string get(const std::string &key) override {
+		virtual std::optional<std::string> get(const std::string &key) override {
 			if(_params.contains(key))
 				return _params[key];
 			
-			return "not-found";
+			return {};
 		}
 		
 		virtual void set(const std::string &key, const std::string &value) override {

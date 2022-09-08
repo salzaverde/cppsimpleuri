@@ -1,9 +1,10 @@
 #pragma once
 
-#include <string>
 #include <memory>
 #include <map>
+#include <optional>
 #include <set>
+#include <string>
 
 namespace salzaverde {
 	class URI {
@@ -15,7 +16,7 @@ namespace salzaverde {
 			static std::unique_ptr<Query> build(const std::map<std::string, std::string> &params);
 			
 			virtual std::string dump() = 0;
-			virtual std::string get(const std::string &key) = 0;
+			virtual std::optional<std::string> get(const std::string &key) = 0;
 			virtual void set(const std::string &key, const std::string &value) = 0;
 			virtual void erase(const std::string &key) = 0;
 			virtual bool contains(const std::string &key) = 0;

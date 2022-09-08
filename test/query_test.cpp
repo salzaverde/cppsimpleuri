@@ -29,9 +29,15 @@ TEST(QueryTest, Contains) {
 TEST(QueryTest, Get) {
 	auto raw = std::string("?key1=val1&key2=val2");
 	auto query = URI::Query::parse(raw);
-
+	
 	EXPECT_EQ(query->get("key1"), "val1");
 	EXPECT_EQ(query->get("key2"), "val2");
+}
+
+TEST(QueryTest, GetEmpty) {
+	auto raw = std::string("?key1=val1");
+	auto query = URI::Query::parse(raw);
+	EXPECT_FALSE(query->get("key2"));
 }
 
 TEST(QueryTest, ListKeys) {

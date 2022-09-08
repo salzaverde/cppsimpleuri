@@ -3,78 +3,57 @@
 #include <string>
 #include <memory>
 #include <map>
+#include <set>
 
-//class URI {
-//public:
-//	class Query {
-//	public:
-//		~Query();
-//
-//		Query();
-//		Query(const std::multimap<std::string, std::string> &parameters);
-//		Query parse(const std::string &queryString);
-//
-//		void add(const std::string &key, const std::string &value);
-//		void remove(const std::string &key);
-//		void modify(const std::string &key, const std::string &value);
-//		std::string getValue(const std::string &key);
-//		std::multimap<std::string, std::string>* get();
-//		std::string toString();
-//	private:
-//		std::multimap<std::string, std::string> _parameters;
-//	};
-//
-//	URI();
-//	~URI ();
-//
-//	URI parse(const std::string& rawUri);
-//
-//	constexpr std::string& getScheme();
-//	void setScheme(const std::string &scheme);
-//
-//	constexpr std::string& getHost();
-//	void setHost(const std::string &host);
-//
-//	constexpr std::string& getPort();
-//	void setPort(const std::string &port);
-//
-//	constexpr std::string& getPath();
-//	void setPath(const std::string &path);
-//
-//	constexpr Query* getQuery();
-//	void setQuery(const Query &query);
-//
-//	//BaseURL is host + port
-//	constexpr std::string& getBaseURL();
-//	constexpr std::string& toString();
-//private:
-//	std::string _scheme, _host, _port, _path;
-//	Query _query;
-//};
-
-//Elements: Scheme, Host, Port, Path (Could be used multiple times, starts with/), QueryString
-
-//www.example.com:1234/some/path?key=value&key2=value2
 class URI {
 public:
-	class UniqueURI : public std::unique_ptr<URI> {
+	class Query {
 	public:
-		static UniqueURI make(const std::string& value, const std::string& prefix, const std::string& suffix);
-		UniqueURI operator| (const UniqueURI &other);
-	protected:
-		using std::unique_ptr<URI>::unique_ptr;
+		virtual ~Query() {}
+		static std::unique_ptr<Query> parse(const std::string &rawQuery);
+		static std::unique_ptr<Query> build(const std::map<std::string, std::string> &params);
+		
+		virtual std::string dump() = 0;
+		virtual std::string get(const std::string &key) = 0;
+		virtual void set(const std::string &key, const std::string &value) = 0;
+		virtual void erase(const std::string &key) = 0;
+		virtual bool contains(const std::string &key) = 0;
+		virtual std::set<std::string> listKeys() = 0;
 	};
 	
-	static UniqueURI Scheme(const std::string& value);
-	static UniqueURI Host(const std::string& value);
-	static UniqueURI Port(const std::string& value);
+	static std::unique_ptr<URI> parse(const std::string &raw);
 	
-	virtual std::string getValue() = 0;
-	virtual std::string getPrefix() = 0;
-	virtual std::string getSuffix() = 0;
+	virtual std::string getScheme() = 0;
+	virtual void setScheme(const std::string &value) = 0;
+	virtual std::string getHost() = 0;
+	virtual void setHost(const std::string &value) = 0;
+	virtual std::string getPort() = 0;
+	virtual void setPort(const std::string &value) = 0;
+	virtual std::string getPath() = 0;
+	virtual void setPath(const std::string &value) = 0;
+	virtual Query* getQuery() = 0;
+	virtual void setQuery(std::unique_ptr<Query> query) = 0;
 	
 	virtual std::string toString() = 0;
 	
-protected:
-	static std::unique_ptr<URI> create(const std::string& value, const std::string& prefix, const std::string& suffix);
+	//TODO: Rename to Builder
+//	class Elements {
+//	public:
+//		Elements(const std::string &value, const std::string &prefix = "", const std::string &suffix = "");
+//		Elements& operator| (const Elements &other);
+//		std::string operator() ();
+//		
+//		static Elements Scheme(const std::string &value);
+//		static Elements Host(const std::string &value);
+//		static Elements Port(const std::string &value);
+//		static Elements Path(const std::string &value);
+//		static Elements Query(const std::string &value);
+//		static Elements Query(const std::multimap<std::string, std::string> &params);
+//		
+//		std::string toString();
+//		
+//		std::string _value;
+//		std::string _prefix;
+//		std::string _suffix;
+//	};
 };

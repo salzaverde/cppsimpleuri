@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 
 ### Project
-project(cppsimpleurilib VERSION 1.0.0 LANGUAGES C CXX)
+project(cppsimpleuri VERSION 1.0.0 LANGUAGES C CXX)
 
 ### Build generation options
 option(SIMPLEURI_LIB_BUILD_TESTS "Build the unit tests." ON)
@@ -11,7 +11,7 @@ option(SIMPLEURI_LIB_BUILD_EXAMPLES "Build examples." OFF)
 set(CMAKE_XCODE_ATTRIBUTE_ARCHS "$(ARCHS_STANDARD)")
 
 ### Library
-set(lib_target_name cppsimpleurilib)
+set(lib_target_name cppsimpleuri)
 add_library(${lib_target_name} STATIC)
 
 ### Sources & Includes

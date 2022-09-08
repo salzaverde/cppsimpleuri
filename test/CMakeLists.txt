@@ -16,8 +16,8 @@ FetchContent_MakeAvailable(gtest)
 include(GoogleTest)
 
 ### Setup
-set(target_name cppsimpleurilib_tests)
-set(lib_target_name cppsimpleurilib)
+set(target_name cppsimpleuri_tests)
+set(lib_target_name cppsimpleuri)
 
 add_executable(${target_name})
 set_target_properties(${target_name} PROPERTIES 

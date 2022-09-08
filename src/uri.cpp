@@ -1,5 +1,4 @@
-#include "uri.h"
-
+#include <salzaverde/uri.h>
 #include <vector>
 
 static const std::string scheme_suffix = "://";

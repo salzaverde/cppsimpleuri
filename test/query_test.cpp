@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <uri.h>
+#include <salzaverde/uri.h>
 
 TEST(QueryTest, Dump) {
 	auto raw = std::string("?key1=val1&key2=val2");

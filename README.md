@@ -1,5 +1,5 @@
 # cppsimpleuri
-A slim & simple to use uri parser.
+A slim & simple uri parser.
 
 Since this is my first open source project i'm happy about feedback and PR's in order to improve or extend this little library.
 

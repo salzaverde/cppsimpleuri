@@ -4,7 +4,13 @@ A slim & simple to use uri parser.
 Since this is my first open source project i'm happy about feedback and PR's in order to improve or extend this little library.
 
 ## Design goals
-The initial design is based on some requirements from another project. It is by no means complete but it should be easily extendable & maintainable.
+- clean
+- maintainable
+- extendable
+- tested
+- easy to integrate with cmake
+
+The initial design is based on some requirements from another project. It is by no means completebut open to change.
 
 ## Requirements
 - cmake

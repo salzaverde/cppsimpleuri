@@ -30,7 +30,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(cppsimpleuri)
 
 target_link_libraries(my_target_name PRIVATE
-    cppsimpleurilib
+    cppsimpleuri
 )
 ```
 

@@ -15,6 +15,7 @@ add_library(${lib_target_name} STATIC)
 ### Sources & Includes
 target_sources(${lib_target_name} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/salzaverde/uri.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/salzaverde/query.cpp"
 )
 
 #headers

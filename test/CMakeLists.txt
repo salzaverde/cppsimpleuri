@@ -30,6 +30,7 @@ set_target_properties(${target_name} PROPERTIES
 
 target_sources(${target_name} PRIVATE
     "uri_test.cpp"
+    "query_test.cpp"
 )
 
 target_link_libraries(${target_name} PRIVATE

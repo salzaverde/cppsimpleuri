@@ -35,25 +35,4 @@ public:
 	virtual void setQuery(std::unique_ptr<Query> query) = 0;
 	
 	virtual std::string toString() = 0;
-	
-	//TODO: Rename to Builder
-//	class Elements {
-//	public:
-//		Elements(const std::string &value, const std::string &prefix = "", const std::string &suffix = "");
-//		Elements& operator| (const Elements &other);
-//		std::string operator() ();
-//		
-//		static Elements Scheme(const std::string &value);
-//		static Elements Host(const std::string &value);
-//		static Elements Port(const std::string &value);
-//		static Elements Path(const std::string &value);
-//		static Elements Query(const std::string &value);
-//		static Elements Query(const std::multimap<std::string, std::string> &params);
-//		
-//		std::string toString();
-//		
-//		std::string _value;
-//		std::string _prefix;
-//		std::string _suffix;
-//	};
 };

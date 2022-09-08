@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <salzaverde/uri.h>
 
+using namespace salzaverde;
+
 TEST(QueryTest, Dump) {
 	auto raw = std::string("?key1=val1&key2=val2");
 	auto query = URI::Query::parse(raw);

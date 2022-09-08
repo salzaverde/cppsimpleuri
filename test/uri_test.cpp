@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 #include <salzaverde/uri.h>
 
+using namespace salzaverde;
+
 TEST(URITest, Parse) {
 	auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2";
 	auto uri = URI::parse(raw);

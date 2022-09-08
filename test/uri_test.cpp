@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Daniel Schütz. All rights reserved.
+// MIT License
+
 #include <gtest/gtest.h>
 #include <salzaverde/uri.h>
 
@@ -34,7 +37,7 @@ TEST(URITest, Change) {
 TEST(URITest, ToString) {
     auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2";
     auto uri = URI::parse(raw);
-    EXPECT_EQ(uri->toString(), raw);
+    EXPECT_EQ(uri->dump(), raw);
 };
 
 TEST(URITest, PlainString) {

@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Daniel Schütz. All rights reserved.
+// MIT License
+
 #include <salzaverde/uri.h>
 #include <vector>
 
@@ -65,7 +68,7 @@ namespace salzaverde {
             _query = std::move(query);
         }
         
-        virtual std::string toString() override {
+        virtual std::string dump() override {
             auto raw = std::string();
             if(! _scheme.empty()) raw += _scheme;
             if(! _host.empty()) raw += _host;

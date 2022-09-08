@@ -1,3 +1,6 @@
+// Copyright (c) 2022 Daniel Schütz. All rights reserved.
+// MIT License
+
 #include <gtest/gtest.h>
 #include <salzaverde/uri.h>
 

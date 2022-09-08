@@ -6,6 +6,8 @@ project(cppsimpleurilib VERSION 1.0.0 LANGUAGES C CXX)
 
 ### Build generation options
 option(SIMPLEURI_LIB_BUILD_TESTS "Build the unit tests." ON)
+option(SIMPLEURI_LIB_BUILD_EXAMPLES "Build examples." OFF)
+
 set(CMAKE_XCODE_ATTRIBUTE_ARCHS "$(ARCHS_STANDARD)")
 
 ### Library
@@ -28,7 +30,10 @@ target_include_directories(${lib_target_name} PUBLIC
 )
 
 ### Properties & Definitions
-set_target_properties(${lib_target_name} PROPERTIES CXX_STANDARD 20)
+set_target_properties(${lib_target_name} PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+)
 
 ### IDE structure
 get_target_property(target_sources ${lib_target_name} SOURCES)
@@ -40,4 +45,9 @@ source_group(TREE "${CMAKE_SOURCE_DIR}" PREFIX "" FILES
 if(SIMPLEURI_LIB_BUILD_TESTS)
     enable_testing()
     add_subdirectory(test)
+endif()
+
+### Examples
+if(SIMPLEURI_LIB_BUILD_EXAMPLES)
+    add_subdirectory(examples)
 endif()

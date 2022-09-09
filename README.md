@@ -1,16 +1,10 @@
 # cppsimpleuri
 A slim & simple uri parser.
 
-Since this is my first open source project i'm happy about feedback and PR's in order to improve or extend this little library.
-
-## Design goals
-- clean
-- maintainable
-- extendable
-- tested
-- easy to integrate with cmake
-
-The initial design is based on some requirements from another project. It is by no means completebut open to change.
+## Features
+- Easy to integrate with CMake
+- Tested using GoogleTest
+- Open to change & extension
 
 ## Requirements
 - cmake

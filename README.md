@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
     auto fragment = uri->getFragment();
     
     //Query parsing
-	auto query = salzaverde::Query::parse(queryString);
+    auto query = salzaverde::Query::parse(queryString);
     query->set("sortby", "name");
     
     //Retrieve a query parameter value by key

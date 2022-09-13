@@ -10,7 +10,7 @@ TEST(URITest, Parse) {
     auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2";
     auto uri = URI::parse(raw);
 
-    EXPECT_EQ(uri->getScheme(), "http://");
+    EXPECT_EQ(uri->getScheme(), "http");
     EXPECT_EQ(uri->getHost(), "example.com");
     EXPECT_EQ(uri->getPort(), "1234");
     EXPECT_EQ(uri->getPath(), "/to/location");
@@ -27,7 +27,7 @@ TEST(URITest, Change) {
     uri->setPath("to/other");
     uri->setQuery(URI::Query::parse("key3=value3"));
 
-    EXPECT_EQ(uri->getScheme(), "https://");
+    EXPECT_EQ(uri->getScheme(), "https");
     EXPECT_EQ(uri->getHost(), "example2.com");
     EXPECT_EQ(uri->getPort(), "5678");
     EXPECT_EQ(uri->getPath(), "/to/other");
@@ -40,16 +40,10 @@ TEST(URITest, ToString) {
     EXPECT_EQ(uri->dump(), raw);
 };
 
-TEST(URITest, PlainString) {
-    auto raw = "http"; //Can't be parsed as scheme without ://, so interpreted as host
-    auto uri = URI::parse(raw);
-    EXPECT_EQ(uri->getHost(), raw);
-};
-
 TEST(URITest, Scheme) {
     auto raw = "http://"; //Can't be parsed as scheme without ://, so interpreted as host
     auto uri = URI::parse(raw);
-    EXPECT_EQ(uri->getScheme(), raw);
+    EXPECT_EQ(uri->getScheme(), "http");
 };
 
 TEST(URITest, Path) {

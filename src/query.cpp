@@ -9,11 +9,11 @@ namespace salzaverde {
 
     class QueryImpl : public Query {
     public:
-        QueryImpl(const std::string &raw) {
+        explicit QueryImpl(const std::string &raw) {
             parse(raw);
         }
         
-        QueryImpl(const std::map<std::string, std::string> &params) : _params(params) {}
+        explicit QueryImpl(const std::map<std::string, std::string> &params) : _params(params) {}
         
         virtual std::string dump() override {
             if(_params.empty())

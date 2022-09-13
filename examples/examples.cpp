@@ -43,8 +43,8 @@ int main(int argc, char *argv[]) {
     //Check if a key exists
     auto containsListKey = newQuery->contains("list");
     auto keys = query->listKeys(); //Returns a set of keys
-    
-    //And replace it in an existing uri
+
+	//And replace it in an existing uri
     uri->setQuery(newQuery->dump());
     
     //Print results
@@ -59,6 +59,11 @@ int main(int argc, char *argv[]) {
     printLine("");
     
     printLine("Parsing Query: " + uri->getQuery());
+	
+	for(auto &key : keys) {
+		printLine("Query contains key: " + key);
+	}
+	
     printLine("Query contains \"list\" key: " + (containsListKey? std::string("true") : std::string("false")));
     printLine("");
     printLine("Uri with replaced QueryString: " + uri->dump());

@@ -16,7 +16,7 @@ namespace salzaverde {
 
     class URIImpl : public URI {
     public:
-        URIImpl(std::string raw) {
+        explicit URIImpl(std::string raw) {
             //Regex parsing contributed by Andreas Schütz.
             //Taken from RFC3986 and modified to extract host and port separately from 'authority', while still supporting IPv6 addresses.
             

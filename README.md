@@ -1,5 +1,3 @@
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2f114b2127ba4a6fbe91a553a1a099de)](https://www.codacy.com/gh/salzaverde/cppsimpleuri/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=salzaverde/cppsimpleuri&amp;utm_campaign=Badge_Grade)
-
 # cppsimpleuri
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)

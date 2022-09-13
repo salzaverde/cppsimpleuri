@@ -8,12 +8,11 @@
 
 namespace salzaverde {
     /**
-     * @brief A simplified URI parser which expects an URI in the style of
-     * "http://some.host:12345/path/to/resource?key1=value1&key2=value2"
+     * @brief A URI parser according to RFC3986
+     * Example URI: "http://some.host:12345/path/to/resource?some=query#some=fragment"
      *
-     * Recognized elements are "Scheme", "Host", "Port", "Path", "QueryString"
-     * A URI can be parsed from any combination of those in the expected sequence,
-     * none is required.
+     * Recognized elements are "Scheme", "Host", "Port", "Path", "Query" and "Fragment"
+     * A URI can be parsed from any combination of those in the expected sequence according to RFC3986
      */
     class URI {
     public:

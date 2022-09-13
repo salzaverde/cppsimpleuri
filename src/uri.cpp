@@ -24,7 +24,7 @@ namespace salzaverde {
 			_host = results[5].str();
 			_port = results[7].str();
 			_path = results[8].str();
-			_query = Query::parse(results[10].str());
+			_query = results[10].str();
         }
         
         virtual std::string getScheme() override {
@@ -65,12 +65,15 @@ namespace salzaverde {
                 _path = value;
         }
         
-        virtual Query* getQuery() override {
-            return _query.get();
+        virtual std::string getQuery() override {
+            return _query;
         }
         
-        virtual void setQuery(std::unique_ptr<Query> query) override {
-            _query = std::move(query);
+        virtual void setQuery(const std::string &value) override {
+			if(value.starts_with(query_prefix))
+				_query = value.substr(query_prefix.length());
+			else
+				_query = value;
         }
         
         virtual std::string dump() override {
@@ -79,16 +82,12 @@ namespace salzaverde {
             if(! _host.empty()) raw += _host;
             if(! _port.empty()) raw += port_prefix + _port;
             if(! _path.empty()) raw += _path;
-            
-            auto queryString = _query->dump();
-            if(! queryString.empty()) raw += queryString;
-            
+			if(! _query.empty()) raw += query_prefix + _query;
             return raw;
         }
 
     private:
-        std::string _scheme, _host, _port, _path;
-        std::unique_ptr<Query> _query;
+        std::string _scheme, _host, _port, _path, _query;
 	};
 	
     std::unique_ptr<URI> URI::parse(const std::string &raw) {

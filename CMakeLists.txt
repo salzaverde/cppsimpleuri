@@ -23,6 +23,7 @@ target_sources(${lib_target_name} PRIVATE
 #headers
 target_sources(${lib_target_name} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include/salzaverde/uri.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/salzaverde/query.h"
 )
 
 target_include_directories(${lib_target_name} PUBLIC 

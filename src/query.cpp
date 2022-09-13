@@ -1,13 +1,13 @@
 // Copyright (c) 2022 Daniel Schütz. All rights reserved.
 // MIT License
 
-#include <salzaverde/uri.h>
+#include <salzaverde/query.h>
 #include <vector>
 
 namespace salzaverde {
     static const std::string query_prefix = "?";
 
-    class QueryImpl : public URI::Query {
+    class QueryImpl : public Query {
     public:
         QueryImpl(const std::string &raw) {
             parse(raw);
@@ -81,11 +81,11 @@ namespace salzaverde {
         }
     };
 
-    std::unique_ptr<URI::Query> URI::Query::parse(const std::string &raw) {
+    std::unique_ptr<Query> Query::parse(const std::string &raw) {
         return std::make_unique<QueryImpl>(raw);
     }
 
-    std::unique_ptr<URI::Query> URI::Query::build(const std::map<std::string, std::string> &params) {
+    std::unique_ptr<Query> Query::build(const std::map<std::string, std::string> &params) {
         return std::make_unique<QueryImpl>(params);
     }
 }

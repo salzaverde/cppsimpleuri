@@ -2,6 +2,7 @@
 // MIT License
 
 #include <salzaverde/uri.h>
+#include <salzaverde/query.h>
 #include <iostream>
 
 void printLine(const std::string& text) {
@@ -18,10 +19,10 @@ int main(int argc, char *argv[]) {
     auto host = uri->getHost();
     auto port = uri->getPort();
     auto path = uri->getPath();
-    auto query = uri->getQuery();
-    auto queryString = query->dump();
+    auto queryString = uri->getQuery();
     
     //Add or replace a query parameter
+	auto query = salzaverde::Query::parse(queryString);
     query->set("sortby", "name");
     
     //Retrieve a query parameter value by key
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]) {
     }
        
     //We can also build a new query string in place
-    auto newQuery = salzaverde::URI::Query::build({
+    auto newQuery = salzaverde::Query::build({
         {"list", "songs"},
         {"include", "rhcp"}
     });
@@ -43,7 +44,7 @@ int main(int argc, char *argv[]) {
     auto keys = query->listKeys(); //Returns a set of keys
     
     //And replace it in an existing uri
-    uri->setQuery(std::move(newQuery));
+    uri->setQuery(newQuery->dump());
     
     //Print results
     printLine("Parsing " + myRawUri + ":");
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
     printLine("Query string is: " + queryString);
     printLine("");
     
-    printLine("Parsing Query: " + uri->getQuery()->dump());
+    printLine("Parsing Query: " + uri->getQuery());
     printLine("Query contains \"list\" key: " + (containsListKey? std::string("true") : std::string("false")));
     printLine("");
     printLine("Uri with replaced QueryString: " + uri->dump());

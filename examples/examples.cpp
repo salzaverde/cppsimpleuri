@@ -11,7 +11,7 @@ void printLine(const std::string& text) {
 
 int main(int argc, char *argv[]) {
     //Parsing
-    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last");
+    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
     auto uri = salzaverde::URI::parse(myRawUri);
     
     //Access the uri's elements
@@ -20,8 +20,9 @@ int main(int argc, char *argv[]) {
     auto port = uri->getPort();
     auto path = uri->getPath();
     auto queryString = uri->getQuery();
+	auto fragment = uri->getFragment();
     
-    //Add or replace a query parameter
+    //Query parsing
 	auto query = salzaverde::Query::parse(queryString);
     query->set("sortby", "name");
     
@@ -33,13 +34,13 @@ int main(int argc, char *argv[]) {
         //Do some error handling
     }
        
-    //We can also build a new query string in place
+    //Build a new query string in place
     auto newQuery = salzaverde::Query::build({
         {"list", "songs"},
         {"include", "rhcp"}
     });
 
-    //You can check if a key exists
+    //Check if a key exists
     auto containsListKey = newQuery->contains("list");
     auto keys = query->listKeys(); //Returns a set of keys
     
@@ -54,6 +55,7 @@ int main(int argc, char *argv[]) {
     printLine("Port is: " + port);
     printLine("Path is: " + path);
     printLine("Query string is: " + queryString);
+	printLine("Fragment is: " + fragment);
     printLine("");
     
     printLine("Parsing Query: " + uri->getQuery());

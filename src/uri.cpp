@@ -12,6 +12,7 @@ namespace salzaverde {
     static const std::string path_prefix = "/";
     static const std::string port_prefix = ":";
     static const std::string query_prefix = "?";
+	static const std::string fragment_prefix = "#";
 
     class URIImpl : public URI {
     public:
@@ -25,6 +26,7 @@ namespace salzaverde {
 			_port = results[7].str();
 			_path = results[8].str();
 			_query = results[10].str();
+			_fragment = results[12].str();
         }
         
         virtual std::string getScheme() override {
@@ -75,6 +77,17 @@ namespace salzaverde {
 			else
 				_query = value;
         }
+		
+		virtual std::string getFragment() override {
+			return _fragment;
+		}
+		
+		virtual void setFragment(const std::string &value) override {
+			if(value.starts_with(fragment_prefix))
+				_fragment = value.substr(fragment_prefix.length());
+			else
+				_fragment = value;
+		}
         
         virtual std::string dump() override {
             auto raw = std::string();
@@ -83,11 +96,12 @@ namespace salzaverde {
             if(! _port.empty()) raw += port_prefix + _port;
             if(! _path.empty()) raw += _path;
 			if(! _query.empty()) raw += query_prefix + _query;
+			if(! _fragment.empty()) raw += fragment_prefix + _fragment;
             return raw;
         }
 
     private:
-        std::string _scheme, _host, _port, _path, _query;
+        std::string _scheme, _host, _port, _path, _query, _fragment;
 	};
 	
     std::unique_ptr<URI> URI::parse(const std::string &raw) {

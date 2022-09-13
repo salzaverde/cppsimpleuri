@@ -1,3 +1,5 @@
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2f114b2127ba4a6fbe91a553a1a099de)](https://www.codacy.com/gh/salzaverde/cppsimpleuri/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=salzaverde/cppsimpleuri&amp;utm_campaign=Badge_Grade)
+
 # cppsimpleuri
 A slim & simple uri parser.
 

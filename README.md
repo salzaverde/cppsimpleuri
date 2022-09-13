@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     auto port = uri->getPort();
     auto path = uri->getPath();
     auto queryString = uri->getQuery();
-	auto fragment = uri->getFragment();
+    auto fragment = uri->getFragment();
     
     //Query parsing
 	auto query = salzaverde::Query::parse(queryString);

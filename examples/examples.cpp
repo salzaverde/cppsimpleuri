@@ -20,10 +20,10 @@ int main(int argc, char *argv[]) {
     auto port = uri->getPort();
     auto path = uri->getPath();
     auto queryString = uri->getQuery();
-	auto fragment = uri->getFragment();
+    auto fragment = uri->getFragment();
     
     //Query parsing
-	auto query = salzaverde::Query::parse(queryString);
+    auto query = salzaverde::Query::parse(queryString);
     query->set("sortby", "name");
     
     //Retrieve a query parameter value by key
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
     printLine("Port is: " + port);
     printLine("Path is: " + path);
     printLine("Query string is: " + queryString);
-	printLine("Fragment is: " + fragment);
+    printLine("Fragment is: " + fragment);
     printLine("");
     
     printLine("Parsing Query: " + uri->getQuery());

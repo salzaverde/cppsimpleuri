@@ -15,7 +15,7 @@ TEST(URITest, Parse) {
     EXPECT_EQ(uri->getPort(), "1234");
     EXPECT_EQ(uri->getPath(), "/to/location");
     EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
-	EXPECT_EQ(uri->getFragment(), "keyA=valueA");
+    EXPECT_EQ(uri->getFragment(), "keyA=valueA");
 };
 
 TEST(URITest, Change) {
@@ -27,14 +27,14 @@ TEST(URITest, Change) {
     uri->setPort("5678");
     uri->setPath("to/other");
     uri->setQuery("key3=value3");
-	uri->setFragment("keyB=valueB");
+    uri->setFragment("keyB=valueB");
 
     EXPECT_EQ(uri->getScheme(), "https");
     EXPECT_EQ(uri->getHost(), "example2.com");
     EXPECT_EQ(uri->getPort(), "5678");
     EXPECT_EQ(uri->getPath(), "/to/other");
-	EXPECT_EQ(uri->getQuery(), "key3=value3");
-	EXPECT_EQ(uri->getFragment(), "keyB=valueB");
+    EXPECT_EQ(uri->getQuery(), "key3=value3");
+    EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
 TEST(URITest, ToString) {
@@ -62,7 +62,7 @@ TEST(URITest, QueryString) {
 };
 
 TEST(URITest, Fragment) {
-	auto raw = "#keyC=valueC";
-	auto uri = URI::parse(raw);
-	EXPECT_EQ(uri->getFragment(), "keyC=valueC");
+    auto raw = "#keyC=valueC";
+    auto uri = URI::parse(raw);
+    EXPECT_EQ(uri->getFragment(), "keyC=valueC");
 };

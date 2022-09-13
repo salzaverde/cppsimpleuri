@@ -36,8 +36,8 @@ namespace salzaverde {
         virtual void setPath(const std::string &value) = 0;
         virtual std::string getQuery() = 0;
         virtual void setQuery(const std::string &value) = 0;
-		virtual std::string getFragment() = 0;
-		virtual void setFragment(const std::string &value) = 0;
+        virtual std::string getFragment() = 0;
+        virtual void setFragment(const std::string &value) = 0;
         
         /**
          * @brief Returns a string representation of the uri object

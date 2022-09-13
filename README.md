@@ -42,7 +42,7 @@ cmake --build build/.
 
 int main(int argc, char *argv[]) {
     //Parsing
-    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last");
+    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
     auto uri = salzaverde::URI::parse(myRawUri);
     
     //Access the uri's elements
@@ -50,10 +50,11 @@ int main(int argc, char *argv[]) {
     auto host = uri->getHost();
     auto port = uri->getPort();
     auto path = uri->getPath();
-    auto query = uri->getQuery();
-    auto queryString = query->dump();
+    auto queryString = uri->getQuery();
+    auto fragment = uri->getFragment();
     
-    //Add or replace a query parameter
+    //Query parsing
+	auto query = salzaverde::Query::parse(queryString);
     query->set("sortby", "name");
     
     //Retrieve a query parameter value by key
@@ -64,17 +65,17 @@ int main(int argc, char *argv[]) {
         //Do some error handling
     }
        
-    //We can also build a new query string in place
-    auto newQuery = salzaverde::URI::Query::build({
+    //Build a new query string in place
+    auto newQuery = salzaverde::Query::build({
         {"list", "songs"},
         {"include", "rhcp"}
     });
 
-    //You can check if a key exists
+    //Check if a key exists
     auto containsListKey = newQuery->contains("list");
     auto keys = query->listKeys(); //Returns a set of keys
     
     //And replace it in an existing uri
-    uri->setQuery(std::move(newQuery));
+    uri->setQuery(newQuery->dump());
 }
 ```

@@ -39,6 +39,7 @@ cmake --build build/.
 ## Examples
 ```cpp
 #include <salzaverde/uri.h>
+#include <salzaverde/query.h>
 
 int main(int argc, char *argv[]) {
     //Parsing

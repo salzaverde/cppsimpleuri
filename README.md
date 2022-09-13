@@ -4,13 +4,13 @@
 A slim & simple uri parser.
 
 ## Features
-- Easy to integrate with CMake
-- Tested using GoogleTest
-- Open to change & extension
+-   Easy to integrate with CMake
+-   Tested using GoogleTest
+-   Open to change & extension
 
 ## Requirements
-- cmake
-- c++20
+-   cmake
+-   c++20
 
 ## Integration
 Include cppsimpleurilib in your cmake project using fetchContent:

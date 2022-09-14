@@ -20,14 +20,6 @@ set(target_name cppsimpleuri_tests)
 set(lib_target_name cppsimpleuri)
 
 add_executable(${target_name})
-set_target_properties(${target_name} PROPERTIES 
-    CXX_CLANG_TIDY "clang-tidy;-style=file;-checks=*"
-    CXX_CPPLINT "cpplint"
-    CXX_INCLUDE_WHAT_YOU_USE ON
-    CXX_LINK_WHAT_YOU_USE ON
-    POSITION_INDEPENDENT_CODE ON
-)
-
 target_sources(${target_name} PRIVATE
     "uri_test.cpp"
     "query_test.cpp"

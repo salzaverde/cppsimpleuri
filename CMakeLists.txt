@@ -7,6 +7,7 @@ project(cppsimpleuri VERSION 1.0.0 LANGUAGES C CXX)
 ### Build generation options
 option(SIMPLEURI_LIB_BUILD_TESTS "Build the unit tests." ON)
 option(SIMPLEURI_LIB_BUILD_EXAMPLES "Build examples." OFF)
+option(SIMPLEURI_LIB_CODE_COVERAGE "Generate a code coverage report using LCOV." OFF)
 
 set(CMAKE_XCODE_ATTRIBUTE_ARCHS "$(ARCHS_STANDARD)")
 

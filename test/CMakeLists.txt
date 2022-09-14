@@ -44,3 +44,28 @@ set_target_properties(gmock PROPERTIES FOLDER Extern)
 set_target_properties(gmock_main PROPERTIES FOLDER Extern)
 
 gtest_discover_tests(${target_name})
+
+###Coverage
+if(SIMPLEURI_LIB_CODE_COVERAGE)
+    find_program(LCOV_TOOL NAMES lcov REQUIRED)
+
+    set(coverage_include
+        ${PROJECT_SOURCE_DIR}/include/salzaverde/*.h
+        ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/test/*.cpp
+    )
+
+    set(coverage_directory "${PROJECT_BINARY_DIR}/code_coverage")
+
+    add_custom_target(code_coverage
+        COMMENT "Generating code coverage report..."
+
+        COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-arcs;-ftest-coverage" -S${PROJECT_SOURCE_DIR} -B${coverage_directory}
+        COMMAND ${CMAKE_COMMAND} --build ${coverage_directory}
+        COMMAND cd ${coverage_directory} && ctest --output-on-failure
+
+        COMMAND ${LCOV_TOOL} --directory . --capture --output-file coverage.info --rc lcov_branch_coverage=1
+        COMMAND ${LCOV_TOOL} -e coverage.info ${coverage_include} --output-file coverage.info.filtered --rc lcov_branch_coverage=1
+        COMMAND genhtml --title "cppsimpleuri" --legend --demangle-cpp --output-directory html --show-details --branch-coverage coverage.info.filtered
+    )
+endif()

@@ -7,12 +7,13 @@ A modern cpp uri parser according to RFC3986.
 ## Tech
 -   CMake
 -   GoogleTest
--   Easy to maintain & extend through unique factory pattern
+-   C++20
 
 ## Features
 -   RFC3986 conform
 -   Includes Query Parser & Builder
 -   Easy to use & understand
+-   Easy to maintain & extend through unique factory pattern
 
 ## Requirements
 -   cmake
@@ -36,14 +37,6 @@ target_link_libraries(my_target_name PRIVATE
 )
 ```
 
-Build the examples from checkout:
-```cpp
-# Commandline
-mkdir build
-cmake -S. -B build -DSIMPLEURI_LIB_BUILD_EXAMPLES=On
-cmake --build build/.
-```
-
 ## Examples
 
 ### URI Parsing
@@ -64,7 +57,6 @@ auto fragment = uri->getFragment();
 ```
 
 ### Query Parsing
-
 ```cpp
 #include <salzaverde/query.h>
 using namespace salzaverde;
@@ -84,7 +76,6 @@ auto keys = query->listKeys();
 ```
 
 ### Query Building
-
 ```cpp
 #include <salzaverde/query.h>
 using namespace salzaverde;

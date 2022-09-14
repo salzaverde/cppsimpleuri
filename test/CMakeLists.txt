@@ -64,8 +64,8 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
         COMMAND ${CMAKE_COMMAND} --build ${coverage_directory}
         COMMAND cd ${coverage_directory} && ctest --output-on-failure
 
-        COMMAND ${LCOV_TOOL} --directory . --capture --output-file coverage.info --rc lcov_branch_coverage=1
+        COMMAND ${LCOV_TOOL} --directory ${coverage_directory} --capture --output-file coverage.info --rc lcov_branch_coverage=1
         COMMAND ${LCOV_TOOL} -e coverage.info ${coverage_include} --output-file coverage.info.filtered --rc lcov_branch_coverage=1
-        COMMAND genhtml --title "cppsimpleuri" --legend --demangle-cpp --output-directory html --show-details --branch-coverage coverage.info.filtered
+        COMMAND genhtml --title "cppsimpleuri" --legend --demangle-cpp --output-directory "${coverage_directory}/html" --show-details --branch-coverage coverage.info.filtered
     )
 endif()

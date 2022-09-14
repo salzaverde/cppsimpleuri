@@ -1,6 +1,6 @@
 # cppsimpleuri
 
-A modern cpp uri parser according to RFC3986. 
+A modern cpp uri & query parser. 
 
 ## Status
 

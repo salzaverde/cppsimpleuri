@@ -8,6 +8,7 @@ A modern cpp uri & query parser.
 ![Ubuntu](https://github.com/salzaverde/cppsimpleuri/workflows/Ubuntu/badge.svg)
 ![MacOS](https://github.com/salzaverde/cppsimpleuri/workflows/MacOS/badge.svg)
 ![Windows](https://github.com/salzaverde/cppsimpleuri/workflows/Windows/badge.svg)
+[![codecov](https://codecov.io/gh/salzaverde/cppsimpleuri/branch/main/graph/badge.svg?token=K68N4BEVVS)](https://codecov.io/gh/salzaverde/cppsimpleuri)
 
 ## Features
 -   RFC3986 conform

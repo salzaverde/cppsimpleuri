@@ -2,12 +2,17 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)
 
-A slim & simple uri parser according to RFC3986.
+A modern cpp uri parser according to RFC3986. 
+
+## Tech
+-   CMake
+-   GoogleTest
+-   Easy to maintain & extend through unique factory pattern
 
 ## Features
--   Easy to integrate with CMake
--   Tested using GoogleTest
--   Open to change & extension
+-   RFC3986 conform
+-   Includes Query Parser & Builder
+-   Easy to use & understand
 
 ## Requirements
 -   cmake

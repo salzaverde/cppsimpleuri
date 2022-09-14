@@ -40,46 +40,59 @@ cmake --build build/.
 ```
 
 ## Examples
+
+### URI Parsing
 ```cpp
 #include <salzaverde/uri.h>
+using namespace salzaverde;
+
+auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
+auto uri = URI::parse(myRawUri);
+    
+//Access the uri's elements
+auto scheme = uri->getScheme();
+auto host = uri->getHost();
+auto port = uri->getPort();
+auto path = uri->getPath();
+auto query = uri->getQuery();
+auto fragment = uri->getFragment();
+```
+
+### Query Parsing
+
+```cpp
 #include <salzaverde/query.h>
+using namespace salzaverde;
 
-int main(int argc, char *argv[]) {
-    //Parsing
-    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
-    auto uri = salzaverde::URI::parse(myRawUri);
-    
-    //Access the uri's elements
-    auto scheme = uri->getScheme();
-    auto host = uri->getHost();
-    auto port = uri->getPort();
-    auto path = uri->getPath();
-    auto queryString = uri->getQuery();
-    auto fragment = uri->getFragment();
-    
-    //Query parsing
-    auto query = salzaverde::Query::parse(queryString);
-    query->set("sortby", "name");
-    
-    //Retrieve a query parameter value by key
-    auto sortbyValue = query->get("sortby");
-    
-    //A value for this key might not exist
-    if(! sortbyValue) {
-        //Do some error handling
-    }
-       
-    //Build a new query string in place
-    auto newQuery = salzaverde::Query::build({
-        {"list", "songs"},
-        {"include", "rhcp"}
-    });
+auto queryString = "artistfilter=rhcp&sortby=name";
+auto query = Query::parse(queryString);
 
-    //Check if a key exists
-    auto containsListKey = newQuery->contains("list");
-    auto keys = query->listKeys(); //Returns a set of keys
-    
-    //And replace it in an existing uri
-    uri->setQuery(newQuery->dump());
-}
+//Get value for key
+auto paramValue = query->get("artistfilter");
+
+//Modify
+query->erase("artistfilter");
+query->set("sortby", "duration");
+
+//List keys
+auto keys = query->listKeys();
+```
+
+### Query Building
+
+```cpp
+#include <salzaverde/query.h>
+using namespace salzaverde;
+
+//Step by step
+std::map<std::string, std::string> parameters;
+parameters.emplace("artistfilter", "rhcp");
+parameters.emplace("sortby", "name");
+auto query = Query::build(parameters);
+	
+//In place
+auto query = Query::build({
+    {"artistfilter", "rhcp"},
+    {"sortby", "name"}
+});
 ```

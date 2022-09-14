@@ -6,11 +6,18 @@
 
 using namespace salzaverde;
 
-TEST(QueryTest, Dump) {
+TEST(QueryTest, Parse) {
     auto raw = std::string("?key1=val1&key2=val2");
     auto query = Query::parse(raw);
 
     EXPECT_EQ(query->dump(), raw);
+}
+
+TEST(QueryTest, ParseWithoutQuestionMark) {
+    auto raw = std::string("key1=val1");
+    auto query = Query::parse(raw);
+
+    EXPECT_EQ(query->dump(), "?key1=val1");
 }
 
 TEST(QueryTest, Build) {

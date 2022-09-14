@@ -61,7 +61,7 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
     add_custom_target(code_coverage
         COMMENT "Generating code coverage report..."
 
-        COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-arcs;-ftest-coverage" -S${PROJECT_SOURCE_DIR} -B${coverage_directory}
+        COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-arcs;-ftest-coverage;-fno-exceptions" -S${PROJECT_SOURCE_DIR} -B${coverage_directory}
         COMMAND ${CMAKE_COMMAND} --build ${coverage_directory}
         COMMAND cd ${coverage_directory} && ctest --output-on-failure
 

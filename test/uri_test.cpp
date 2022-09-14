@@ -6,10 +6,18 @@
 
 using namespace salzaverde;
 
-TEST(URITest, Parse) {
-    auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
-    auto uri = URI::parse(raw);
+class URITest : public testing::Test {
+public:
+	void SetUp() override {
+		uri = URI::parse(raw);
+	}
 
+protected:
+	std::string raw = "http://example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
+	std::unique_ptr<URI> uri;
+};
+
+TEST_F(URITest, Parse) {
     EXPECT_EQ(uri->getScheme(), "http");
     EXPECT_EQ(uri->getHost(), "example.com");
     EXPECT_EQ(uri->getPort(), "1234");
@@ -18,51 +26,83 @@ TEST(URITest, Parse) {
     EXPECT_EQ(uri->getFragment(), "keyA=valueA");
 };
 
-TEST(URITest, Change) {
-    auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2";
-    auto uri = URI::parse(raw);
+TEST_F(URITest, SetScheme) {
+	uri->setScheme("https");
+	EXPECT_EQ(uri->getScheme(), "https");
+};
 
-    uri->setScheme("https");
-    uri->setHost("example2.com");
-    uri->setPort("5678");
-    uri->setPath("to/other");
-    uri->setQuery("key3=value3");
+TEST_F(URITest, SetSchemeWithSuffix) {
+	uri->setScheme("https://");
+	EXPECT_EQ(uri->getScheme(), "https");
+};
+
+TEST_F(URITest, SetHost) {
+	uri->setHost("example2.com");
+	EXPECT_EQ(uri->getHost(), "example2.com");
+};
+
+TEST_F(URITest, SetPort) {
+	uri->setPort("5678");
+	EXPECT_EQ(uri->getPort(), "5678");
+};
+
+TEST_F(URITest, SetPath) {
+	uri->setPath("to/other");
+	EXPECT_EQ(uri->getPath(), "/to/other");
+};
+
+TEST_F(URITest, SetPathWithPrefix) {
+	uri->setPath("/to/other");
+	EXPECT_EQ(uri->getPath(), "/to/other");
+};
+
+TEST_F(URITest, SetQuery) {
+	uri->setQuery("key3=value3");
+	EXPECT_EQ(uri->getQuery(), "key3=value3");
+};
+
+TEST_F(URITest, SetQueryWithPrefix) {
+	uri->setQuery("?key3=value3");
+	EXPECT_EQ(uri->getQuery(), "key3=value3");
+};
+
+TEST_F(URITest, SetFragment) {
     uri->setFragment("keyB=valueB");
-
-    EXPECT_EQ(uri->getScheme(), "https");
-    EXPECT_EQ(uri->getHost(), "example2.com");
-    EXPECT_EQ(uri->getPort(), "5678");
-    EXPECT_EQ(uri->getPath(), "/to/other");
-    EXPECT_EQ(uri->getQuery(), "key3=value3");
     EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
-TEST(URITest, ToString) {
-    auto raw = "http://example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
-    auto uri = URI::parse(raw);
+TEST_F(URITest, SetFragmentWithPrefix) {
+	uri->setFragment("#keyB=valueB");
+	EXPECT_EQ(uri->getFragment(), "keyB=valueB");
+};
+
+TEST_F(URITest, ToString) {
     EXPECT_EQ(uri->dump(), raw);
 };
 
-TEST(URITest, Scheme) {
-    auto raw = "http://";
-    auto uri = URI::parse(raw);
+TEST_F(URITest, Scheme) {
+    auto uri = URI::parse("http://");
     EXPECT_EQ(uri->getScheme(), "http");
 };
 
-TEST(URITest, Path) {
-    auto raw = "/some/path";
-    auto uri = URI::parse(raw);
-    EXPECT_EQ(uri->getPath(), raw);
+TEST_F(URITest, Path) {
+    auto uri = URI::parse("/some/path");
+    EXPECT_EQ(uri->getPath(), "/some/path");
 };
 
-TEST(URITest, QueryString) {
-    auto raw = "?key1=value1";
-    auto uri = URI::parse(raw);
+TEST_F(URITest, QueryString) {
+    auto uri = URI::parse("?key1=value1");
     EXPECT_EQ(uri->getQuery(), "key1=value1");
 };
 
-TEST(URITest, Fragment) {
-    auto raw = "#keyC=valueC";
-    auto uri = URI::parse(raw);
+TEST_F(URITest, Fragment) {
+    auto uri = URI::parse("#keyC=valueC");
     EXPECT_EQ(uri->getFragment(), "keyC=valueC");
+};
+
+TEST_F(URITest, IPv6) {
+	auto uri = URI::parse("https://[2001:db8:2a:3256:adfe:5c0:3:6]:1176/to/location?key1=value1&key2=value2#keyA=valueA");
+	EXPECT_EQ(uri->getHost(), "[2001:db8:2a:3256:adfe:5c0:3:6]");
+	EXPECT_EQ(uri->getPort(), "1176");
+	EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
 };

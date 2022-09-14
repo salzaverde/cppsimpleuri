@@ -56,6 +56,8 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
     )
 
     set(coverage_directory "${PROJECT_BINARY_DIR}/code_coverage")
+    set(coverage_all_path ${coverage_directory}/coverage_all.info)
+    set(coverage_path ${coverage_directory}/coverage.txt)
 
     add_custom_target(code_coverage
         COMMENT "Generating code coverage report..."
@@ -64,8 +66,8 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
         COMMAND ${CMAKE_COMMAND} --build ${coverage_directory}
         COMMAND cd ${coverage_directory} && ctest --output-on-failure
 
-        COMMAND ${LCOV_TOOL} --directory ${coverage_directory} --capture --output-file coverage_all.info --rc lcov_branch_coverage=1
-        COMMAND ${LCOV_TOOL} -e coverage_all.info ${coverage_include} --output-file coverage.txt --rc lcov_branch_coverage=1
-        COMMAND genhtml --title "cppsimpleuri" --legend --demangle-cpp --output-directory "${coverage_directory}/html" --show-details --branch-coverage coverage.txt
+        COMMAND ${LCOV_TOOL} --directory ${coverage_directory} --capture --output-file ${coverage_all_path} --rc lcov_branch_coverage=1
+        COMMAND ${LCOV_TOOL} -e ${coverage_all_path} ${coverage_include} --output-file ${coverage_path} --rc lcov_branch_coverage=1
+        COMMAND genhtml --title "cppsimpleuri" --legend --demangle-cpp --output-directory "${coverage_directory}/html" --show-details --branch-coverage ${coverage_path}
     )
 endif()

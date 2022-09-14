@@ -40,3 +40,8 @@ jobs:
     - name: Build
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target code_coverage
       
+    - name: Upload to codecov
+      uses: codecov/codecov-action@v3
+      with:
+        directory: ${{github.workspace}}/build/code_coverage
+      

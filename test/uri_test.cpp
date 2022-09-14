@@ -61,9 +61,19 @@ TEST_F(URITest, SetQuery) {
 	EXPECT_EQ(uri->getQuery(), "key3=value3");
 };
 
+TEST_F(URITest, SetQueryWithPrefix) {
+	uri->setQuery("?key3=value3");
+	EXPECT_EQ(uri->getQuery(), "key3=value3");
+};
+
 TEST_F(URITest, SetFragment) {
     uri->setFragment("keyB=valueB");
     EXPECT_EQ(uri->getFragment(), "keyB=valueB");
+};
+
+TEST_F(URITest, SetFragmentWithPrefix) {
+	uri->setFragment("#keyB=valueB");
+	EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
 TEST_F(URITest, ToString) {

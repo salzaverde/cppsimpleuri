@@ -18,12 +18,8 @@ A modern cpp uri & query parser.
 
 ## Tech
 -   CMake
--   GoogleTest
+-   GoogleTest - 100% code coverage
 -   C++20
-
-## Requirements
--   cmake
--   c++20
 
 ## Integration
 Include cppsimpleurilib in your cmake project using fetchContent:

@@ -89,3 +89,10 @@ TEST_F(URITest, Fragment) {
     auto uri = URI::parse("#keyC=valueC");
     EXPECT_EQ(uri->getFragment(), "keyC=valueC");
 };
+
+TEST_F(URITest, IPv6) {
+	auto uri = URI::parse("https://[2001:db8:2a:3256:adfe:5c0:3:6]:1176/to/location?key1=value1&key2=value2#keyA=valueA");
+	EXPECT_EQ(uri->getHost(), "[2001:db8:2a:3256:adfe:5c0:3:6]");
+	EXPECT_EQ(uri->getPort(), "1176");
+	EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
+};

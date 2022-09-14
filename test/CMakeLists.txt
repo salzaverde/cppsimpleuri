@@ -7,7 +7,7 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE INTERNAL "Do not update fetched c
 FetchContent_Declare(
     gtest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG v1.12.0
+    GIT_TAG release-v1.12.1
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
 )

@@ -4,16 +4,16 @@
 
 A modern cpp uri parser according to RFC3986. 
 
-## Tech
--   CMake
--   GoogleTest
--   C++20
-
 ## Features
 -   RFC3986 conform
 -   Includes Query Parser & Builder
 -   Easy to use & understand
 -   Easy to maintain & extend through unique factory pattern
+
+## Tech
+-   CMake
+-   GoogleTest
+-   C++20
 
 ## Requirements
 -   cmake

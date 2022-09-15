@@ -1,6 +1,6 @@
 # cppsimpleuri
 
-A modern cpp uri & query parser. 
+A modern C++ uri & query parser. 
 
 ## Status
 

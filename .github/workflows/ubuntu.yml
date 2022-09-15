@@ -46,4 +46,10 @@ jobs:
         files: ${{github.workspace}}/build/code_coverage/coverage.txt
         fail_ci_if_error: true
         verbose: true
+        
+    - name: Upload to codacy
+      uses: codacy/codacy-coverage-reporter-action@v1
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: ${{github.workspace}}/build/code_coverage/coverage.txt
       

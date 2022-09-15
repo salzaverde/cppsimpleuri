@@ -11,7 +11,7 @@ A modern C++ uri & query parser.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)
 
 ## Features
--   RFC3986 conform
+-   RFC3986
 -   Includes Query Parser & Builder
 -   Easy to use & understand
 -   Easy to maintain & extend through unique factory pattern

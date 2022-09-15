@@ -4,11 +4,11 @@ A modern C++ uri & query parser.
 
 ## Status
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)
 ![Ubuntu](https://github.com/salzaverde/cppsimpleuri/workflows/Ubuntu/badge.svg)
 ![MacOS](https://github.com/salzaverde/cppsimpleuri/workflows/MacOS/badge.svg)
 ![Windows](https://github.com/salzaverde/cppsimpleuri/workflows/Windows/badge.svg)
 [![codecov](https://codecov.io/gh/salzaverde/cppsimpleuri/branch/main/graph/badge.svg?token=K68N4BEVVS)](https://codecov.io/gh/salzaverde/cppsimpleuri)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)
 
 ## Features
 -   RFC3986 conform

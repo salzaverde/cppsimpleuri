@@ -22,11 +22,13 @@ A modern C++ uri & query parser.
 -   C++20
 
 ## Integration
-Include cppsimpleurilib in your cmake project using fetchContent:
+Include cppsimpleuri in your cmake project using fetchContent:
 ```cpp
 # CMakeLists.txt
-include(FetchContent)
 
+add_executable(my_target_name ...)
+
+include(FetchContent)
 FetchContent_Declare(
     cppsimpleuri
     GIT_REPOSITORY https://github.com/salzaverde/cppsimpleuri.git

@@ -13,17 +13,23 @@ public:
 	}
 
 protected:
-	std::string raw = "http://example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
+	std::string raw = "http://salzaverde@example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
 	std::unique_ptr<URI> uri;
 };
 
 TEST_F(URITest, Parse) {
     EXPECT_EQ(uri->getScheme(), "http");
+	EXPECT_EQ(uri->getUserInfo(), "salzaverde");
     EXPECT_EQ(uri->getHost(), "example.com");
     EXPECT_EQ(uri->getPort(), "1234");
     EXPECT_EQ(uri->getPath(), "/to/location");
     EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
     EXPECT_EQ(uri->getFragment(), "keyA=valueA");
+};
+
+TEST_F(URITest, SetUserInfo) {
+	uri->setUserInfo("salzaverde");
+	EXPECT_EQ(uri->getUserInfo(), "salzaverde");
 };
 
 TEST_F(URITest, SetScheme) {

@@ -28,6 +28,8 @@ namespace salzaverde {
          */
         virtual std::string getScheme() = 0;
         virtual void setScheme(const std::string &value) = 0;
+		virtual std::string getUserInfo() = 0;
+		virtual void setUserInfo(const std::string &value) = 0;
         virtual std::string getHost() = 0;
         virtual void setHost(const std::string &value) = 0;
         virtual std::string getPort() = 0;

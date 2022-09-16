@@ -9,6 +9,7 @@
 
 namespace salzaverde {
     static const std::string scheme_suffix = "://";
+	static const std::string userinfo_suffix = "@";
     static const std::string path_prefix = "/";
     static const std::string port_prefix = ":";
     static const std::string query_prefix = "?";
@@ -17,19 +18,20 @@ namespace salzaverde {
     class URIImpl : public URI {
     public:
         explicit URIImpl(std::string raw) {
-            //Regex parsing contributed by Andreas Schütz.
-            //Taken from RFC3986 and modified to extract host and port separately from 'authority', while still supporting IPv6 addresses.
-            
-            std::smatch results;
-            const std::regex regex(R"(^(([^:/?#]+):)?(//((\[.*\]|[^/?#:]+)*(:(\d+))?))?([^?#]*)(\?([^#]*))?(#(.*))?)");
-            std::regex_match(raw, results, regex);
-            
-            _scheme = results[2].str();
-            _host = results[5].str();
-            _port = results[7].str();
-            _path = results[8].str();
-            _query = results[10].str();
-            _fragment = results[12].str();
+			//The original proposed regex from RFC 3986 splits the uri into scheme | authority | path | query | fragment
+			auto RFC3986Results= matchRegex(raw, std::regex(R"(^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?)"));
+			
+			//Split the authority into userinfo, host and port
+			auto authority = RFC3986Results[4].str();
+			auto authorityResults = matchRegex(authority, std::regex(R"(^(([^@]*)@)?((\[(.*)\]|[^:]+):)?(.*)?)"));
+			
+			_scheme = RFC3986Results[2].str();
+			_userinfo = authorityResults[2].str();
+			_host = authorityResults[4].str();
+			_port = authorityResults[6].str();
+            _path = RFC3986Results[5].str();
+            _query = RFC3986Results[7].str();
+            _fragment = RFC3986Results[9].str();
         }
         
         virtual std::string getScheme() override {
@@ -43,6 +45,14 @@ namespace salzaverde {
                 _scheme = value;
         }
         
+		virtual std::string getUserInfo() override {
+			return _userinfo;
+		}
+		
+		virtual void setUserInfo(const std::string &value) override {
+			_userinfo = value;
+		}
+		
         virtual std::string getHost() override {
             return _host;
         }
@@ -95,6 +105,7 @@ namespace salzaverde {
         virtual std::string dump() override {
             auto raw = std::string();
             if(! _scheme.empty()) raw += _scheme + scheme_suffix;
+			if(! _userinfo.empty()) raw += _userinfo + userinfo_suffix;
             if(! _host.empty()) raw += _host;
             if(! _port.empty()) raw += port_prefix + _port;
             if(! _path.empty()) raw += _path;
@@ -104,7 +115,13 @@ namespace salzaverde {
         }
 
     private:
-        std::string _scheme, _host, _port, _path, _query, _fragment;
+		std::smatch matchRegex(const std::string &input, const std::regex &regex) {
+			std::smatch results;
+			std::regex_match(input, results, regex);
+			return results;
+		}
+		
+        std::string _scheme, _userinfo, _host, _port, _path, _query, _fragment;
     };
     
     std::unique_ptr<URI> URI::parse(const std::string &raw) {

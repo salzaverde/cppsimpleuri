@@ -104,7 +104,9 @@ namespace salzaverde {
         
         virtual std::string dump() override {
             auto raw = std::string();
-            if(! _scheme.empty()) raw += _scheme + scheme_suffix;
+			bool hasAuthority = ! _host.empty();
+			
+            if(! _scheme.empty()) raw += _scheme + (hasAuthority? scheme_suffix : ":");
 			if(! _userinfo.empty()) raw += _userinfo + userinfo_suffix;
             if(! _host.empty()) raw += _host;
             if(! _port.empty()) raw += port_prefix + _port;

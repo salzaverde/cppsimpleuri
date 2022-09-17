@@ -16,21 +16,25 @@ namespace salzaverde {
 		
 		UriGenerator() {}
 		
-		void generate (std::vector<UriComponents::Type> types) {
+		void generate (const std::vector<UriComponents::Type> &types = {}) {
+			if(types.empty())
+				uris.push_back({""});
+			
 			std::vector<std::vector<std::string>> inputData;
 			for(auto type : types)
-					inputData.push_back(components[type]);
+				inputData.push_back(components[type]);
 			
 			std::vector<TestURI> output;
 			auto combinations = CartesianProduct<std::string>(inputData);
 			for(auto &uriElements : combinations.get()) {
-				TestURI element;
+				TestURI testUri;
 				auto it = uriElements.begin();
 				for(auto type : types) {
-					element.raw += getPrefix(type) + *it;
-					element.components[type] = *it++;
+					auto prefix = getPrefix(type, types);
+					testUri.raw += prefix + *it;
+					testUri.components[type] = type == UriComponents::Type::path? prefix + *it++ : *it++;
 				}
-				output.push_back(element);
+				output.push_back(testUri);
 			}
 			
 			uris.insert(uris.end(), output.begin(), output.end());
@@ -44,7 +48,7 @@ namespace salzaverde {
 		UriComponents components;
 		std::vector<TestURI> uris;
 		
-		std::string getPrefix(UriComponents::Type type) {
+		std::string getPrefix(UriComponents::Type type, const std::vector<UriComponents::Type> &types) {
 			if(type == UriComponents::Type::userinfo)
 				return "//";
 			
@@ -54,6 +58,9 @@ namespace salzaverde {
 			if(type == UriComponents::Type::port)
 				return ":";
 			
+			if(type == UriComponents::Type::path && hasAuthority(types))
+				return "/";
+			
 			if(type == UriComponents::Type::query)
 				return "?";
 			
@@ -62,5 +69,12 @@ namespace salzaverde {
 			
 			return "";
 		}
+		
+		bool hasAuthority(const std::vector<UriComponents::Type> &types) {
+			for(auto type : types)
+				if(type == UriComponents::Type::host) return true;
+
+			return false;
+		};
 	};
 }

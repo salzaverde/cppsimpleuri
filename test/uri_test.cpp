@@ -26,8 +26,7 @@ TEST_P(URITest2, Sample) {
 	if(element.components.find(UriComponents::Type::scheme) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::scheme], uri->getScheme() + ":") << "Raw URI was:" + element.raw;
 	
-	bool containsUserInfo = element.components.find(UriComponents::Type::userinfo) != element.components.end();
-	if(containsUserInfo)
+	if(element.components.find(UriComponents::Type::userinfo) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::userinfo], uri->getUserInfo() + "@") << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::host) != element.components.end())
@@ -45,11 +44,13 @@ TEST_P(URITest2, Sample) {
 	if(element.components.find(UriComponents::Type::fragment) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::fragment], uri->getFragment()) << "Raw URI was:" + element.raw;
 	
+	EXPECT_EQ(uri->dump(), element.raw);
 }
 
 static std::vector<UriGenerator::TestURI> createTestValues() {
 	UriGenerator uriGenerator;
 	
+	uriGenerator.generate();
 	uriGenerator.generate({UriComponents::Type::scheme});
 	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::userinfo, UriComponents::Type::host});
 	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::userinfo, UriComponents::Type::host, UriComponents::Type::port});
@@ -134,38 +135,6 @@ TEST_F(URITest, SetFragmentWithPrefix) {
 
 TEST_F(URITest, ToString) {
     EXPECT_EQ(uri->dump(), raw);
-};
-
-TEST(CustomURITest, Scheme) {
-    auto uri = URI::parse("http://");
-    EXPECT_EQ(uri->getScheme(), "http");
-};
-
-TEST(CustomURITest, Path) {
-    auto uri = URI::parse("/some/path");
-    EXPECT_EQ(uri->getPath(), "/some/path");
-};
-
-TEST(URITeCustomURITestst, QueryString) {
-    auto uri = URI::parse("?key1=value1");
-    EXPECT_EQ(uri->getQuery(), "key1=value1");
-};
-
-TEST(CustomURITest, Fragment) {
-    auto uri = URI::parse("#keyC=valueC");
-    EXPECT_EQ(uri->getFragment(), "keyC=valueC");
-};
-
-TEST(CustomURITest, IPv6) {
-	auto uri = URI::parse("https://[2001:db8:2a:3256:adfe:5c0:3:6]:1176/to/location?key1=value1&key2=value2#keyA=valueA");
-	EXPECT_EQ(uri->getHost(), "[2001:db8:2a:3256:adfe:5c0:3:6]");
-	EXPECT_EQ(uri->getPort(), "1176");
-	EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
-};
-
-TEST(CustomURITest, Empty) {
-    auto uri = URI::parse("");
-    EXPECT_EQ(uri->dump(), "");
 };
 
 

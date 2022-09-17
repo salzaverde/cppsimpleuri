@@ -51,11 +51,11 @@ namespace salzaverde {
 		
 			//Valid paths can contain "-" / "." / "_" / "~" / "@" / "/"
 			data[Type::path] = {
-				"/oasis:names:specification:docbook:dtd:xml:4.1.2",
-				"/comp.infosystems.www.servers.unix",
-				"/fred@example.com",
-				"/some/common/path",
-				"/+1-816-555-1212"
+				"oasis:names:specification:docbook:dtd:xml:4.1.2",
+				"comp.infosystems.www.servers.unix",
+				"fred@example.com",
+				"some/common/path",
+				"+1-816-555-1212"
 			};
 		
 			//Valid queries can contain reserved characters "?", "/"

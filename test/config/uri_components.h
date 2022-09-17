@@ -40,12 +40,13 @@ namespace salzaverde {
 				"comp.infosystems.www.servers.unix",
 				"salza-verde.org",
 				"127.0.0.1",
-				"localhost"
+				"localhost",
+				"[2001:db8:2a:3256:adfe:5c0:3:6]"
 			};
 		
 			//Valid ports contain digits
 			data[Type::port] = {
-				":1176"
+				"1176"
 			};
 		
 			//Valid paths can contain "-" / "." / "_" / "~" / "@" / "/"
@@ -59,18 +60,18 @@ namespace salzaverde {
 		
 			//Valid queries can contain reserved characters "?", "/"
 			data[Type::query] = {
-				"?key=value",
-				"?key1=value1&key2=value2",
-				"?data?",
-				"?otherdata/"
+				"key=value",
+				"key1=value1&key2=value2",
+				"data?",
+				"otherdata/"
 			};
 		
 			//Valid fragments can contain reserved characters "?", "/"
 			data[Type::fragment] = {
-				"#frag=value",
-				"#frag1=value1&frag2=value2",
-				"#frag_data?",
-				"#frag_otherdata/"
+				"frag=value",
+				"frag1=value1&frag2=value2",
+				"frag_data?",
+				"frag_otherdata/"
 			};
 		}
 		

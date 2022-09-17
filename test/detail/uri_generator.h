@@ -18,27 +18,16 @@ namespace salzaverde {
 		
 		void generate (std::vector<UriComponents::Type> types) {
 			std::vector<std::vector<std::string>> inputData;
-			bool isPrefixed = false;
-			for(auto type : types) {
-				if((type == UriComponents::Type::host || type == UriComponents::Type::userinfo) && (!isPrefixed)) {
-					auto prefixed = components[type];
-					for(auto &element : prefixed) {
-						element = "//" + element;
-					}
-					inputData.push_back(prefixed);
-					isPrefixed = true;
-				}
-				else
+			for(auto type : types)
 					inputData.push_back(components[type]);
-			}
 			
 			std::vector<TestURI> output;
 			auto combinations = CartesianProduct<std::string>(inputData);
-			for(auto &combination : combinations.get()) {
+			for(auto &uriElements : combinations.get()) {
 				TestURI element;
-				auto it = combination.begin();
+				auto it = uriElements.begin();
 				for(auto type : types) {
-					element.raw += *it;
+					element.raw += getPrefix(type) + *it;
 					element.components[type] = *it++;
 				}
 				output.push_back(element);
@@ -54,5 +43,24 @@ namespace salzaverde {
 	private:
 		UriComponents components;
 		std::vector<TestURI> uris;
+		
+		std::string getPrefix(UriComponents::Type type) {
+			if(type == UriComponents::Type::userinfo)
+				return "//";
+			
+			if(type == UriComponents::Type::host && !((type - 1) == UriComponents::Type::userinfo))
+				return "//";
+			
+			if(type == UriComponents::Type::port)
+				return ":";
+			
+			if(type == UriComponents::Type::query)
+				return "?";
+			
+			if(type == UriComponents::Type::fragment)
+				return "#";
+			
+			return "";
+		}
 	};
 }

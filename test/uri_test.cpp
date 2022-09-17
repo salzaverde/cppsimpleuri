@@ -28,22 +28,22 @@ TEST_P(URITest2, Sample) {
 	
 	bool containsUserInfo = element.components.find(UriComponents::Type::userinfo) != element.components.end();
 	if(containsUserInfo)
-		EXPECT_EQ(element.components[UriComponents::Type::userinfo], "//" + uri->getUserInfo() + "@") << "Raw URI was:" + element.raw;
+		EXPECT_EQ(element.components[UriComponents::Type::userinfo], uri->getUserInfo() + "@") << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::host) != element.components.end())
-		EXPECT_EQ(element.components[UriComponents::Type::host], (containsUserInfo?"":"//") + uri->getHost()) << "Raw URI was:" + element.raw;
+		EXPECT_EQ(element.components[UriComponents::Type::host], uri->getHost()) << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::port) != element.components.end())
-		EXPECT_EQ(element.components[UriComponents::Type::port], ":" + uri->getPort()) << "Raw URI was:" + element.raw;
+		EXPECT_EQ(element.components[UriComponents::Type::port], uri->getPort()) << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::path) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::path], uri->getPath()) << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::query) != element.components.end())
-		EXPECT_EQ(element.components[UriComponents::Type::query], "?" + uri->getQuery()) << "Raw URI was:" + element.raw;
+		EXPECT_EQ(element.components[UriComponents::Type::query], uri->getQuery()) << "Raw URI was:" + element.raw;
 	
 	if(element.components.find(UriComponents::Type::fragment) != element.components.end())
-		EXPECT_EQ(element.components[UriComponents::Type::fragment], "#" + uri->getFragment()) << "Raw URI was:" + element.raw;
+		EXPECT_EQ(element.components[UriComponents::Type::fragment], uri->getFragment()) << "Raw URI was:" + element.raw;
 	
 }
 
@@ -75,16 +75,6 @@ public:
 protected:
 	std::string raw = "http://salzaverde@example.com:1234/to/location?key1=value1&key2=value2#keyA=valueA";
 	std::unique_ptr<URI> uri;
-};
-
-TEST_F(URITest, Parse) {
-    EXPECT_EQ(uri->getScheme(), "http");
-	EXPECT_EQ(uri->getUserInfo(), "salzaverde");
-    EXPECT_EQ(uri->getHost(), "example.com");
-    EXPECT_EQ(uri->getPort(), "1234");
-    EXPECT_EQ(uri->getPath(), "/to/location");
-    EXPECT_EQ(uri->getQuery(), "key1=value1&key2=value2");
-    EXPECT_EQ(uri->getFragment(), "keyA=valueA");
 };
 
 TEST_F(URITest, SetUserInfo) {

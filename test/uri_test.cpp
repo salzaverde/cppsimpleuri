@@ -3,165 +3,60 @@
 
 #include <gtest/gtest.h>
 #include <salzaverde/uri.h>
-#include "detail/cartesian_product.h"
+
+#include <config/uri_components.h>
+#include <detail/uri_generator.h>
+
 
 using namespace salzaverde;
 
-class TestData {
-public:
-	enum Components {
-		scheme = 0,
-		userinfo,
-		host,
-		port,
-		path,
-		query,
-		fragment,
-		count
-	};
-	
-	struct TestElement {
-		std::string rawURI = "";
-		std::map<Components, std::string> expected;
-	};
-	
-	TestData() : data(Components::count) {
-		//Valid schemes contain characters, digits, ., + or -
-		data[Components::scheme] = {
-			"mailto:",
-			"my.ftp+ssh-1:"
-		};
-	
-		//Valid user infos can contain "-" / "." / "_" / "~"
-		data[Components::userinfo] = {
-			"sa.lza-ve_r~de@"
-		};
-	
-		//Valid hosts can contain "-" / "."
-		data[Components::host] = {
-			"comp.infosystems.www.servers.unix",
-			"salza-verde.org",
-			"127.0.0.1",
-			"localhost"
-		};
-	
-		//Valid ports contain digits
-		data[Components::port] = {
-			":1176"
-		};
-	
-		//Valid paths can contain "-" / "." / "_" / "~" / "@" / "/"
-		data[Components::path] = {
-			"/oasis:names:specification:docbook:dtd:xml:4.1.2",
-			"/comp.infosystems.www.servers.unix",
-			"/fred@example.com",
-			"/some/common/path",
-			"/+1-816-555-1212"
-		};
-	
-		//Valid queries can contain reserved characters "?", "/"
-		data[Components::query] = {
-			"?key=value",
-			"?key1=value1&key2=value2",
-			"?data?",
-			"?otherdata/"
-		};
-	
-		//Valid fragments can contain reserved characters "?", "/"
-		data[Components::fragment] = {
-			"#frag=value",
-			"#frag1=value1&frag2=value2",
-			"#frag_data?",
-			"#frag_otherdata/"
-		};
-	}
-	
-	std::vector<TestElement> generateTestElements (std::vector<Components> components) {
-		std::vector<std::vector<std::string>> inputData;
-		bool isPrefixed = false;
-		for(auto component : components) {
-			if((component == Components::host || component == Components::userinfo) && (!isPrefixed)) {
-				auto prefixed = data[component];
-				for(auto &element : prefixed) {
-					element = "//" + element;
-				}
-				inputData.push_back(prefixed);
-				isPrefixed = true;
-			}
-			else
-				inputData.push_back(data[component]);
-		}
-		
-		std::vector<TestElement> output;
-		auto combinations = CartesianProduct<std::string>(inputData);
-		for(auto &combination : combinations.get()) {
-			TestElement element;
-			auto it = combination.begin();
-			for(auto component : components) {
-				element.rawURI += *it;
-				element.expected[component] = *it++;
-			}
-			output.push_back(element);
-		}
-		return output;
-	}
-	
-private:
-	std::vector<std::vector<std::string>> data;
-};
-
-class URITest2 : public testing::TestWithParam<TestData::TestElement> {
+class URITest2 : public testing::TestWithParam<UriGenerator::TestURI> {
 public:
 	void SetUp() override {
 		element = GetParam();
-		uri = URI::parse(element.rawURI);
+		uri = URI::parse(element.raw);
 	}
 
 	protected:
-	TestData::TestElement element;
+	UriGenerator::TestURI element;
 	std::unique_ptr<URI> uri;
 };
 
 TEST_P(URITest2, Sample) {
-	if(element.expected.find(TestData::Components::scheme) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::scheme], uri->getScheme() + ":") << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::scheme) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::scheme], uri->getScheme() + ":") << "Raw URI was:" + element.raw;
 	
-	bool containsUserInfo = element.expected.find(TestData::Components::userinfo) != element.expected.end();
+	bool containsUserInfo = element.components.find(UriComponents::Type::userinfo) != element.components.end();
 	if(containsUserInfo)
-		EXPECT_EQ(element.expected[TestData::Components::userinfo], "//" + uri->getUserInfo() + "@") << "Raw URI was:" + element.rawURI;
+		EXPECT_EQ(element.components[UriComponents::Type::userinfo], "//" + uri->getUserInfo() + "@") << "Raw URI was:" + element.raw;
 	
-	if(element.expected.find(TestData::Components::host) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::host], (containsUserInfo?"":"//") + uri->getHost()) << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::host) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::host], (containsUserInfo?"":"//") + uri->getHost()) << "Raw URI was:" + element.raw;
 	
-	if(element.expected.find(TestData::Components::port) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::port], ":" + uri->getPort()) << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::port) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::port], ":" + uri->getPort()) << "Raw URI was:" + element.raw;
 	
-	if(element.expected.find(TestData::Components::path) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::path], uri->getPath()) << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::path) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::path], uri->getPath()) << "Raw URI was:" + element.raw;
 	
-	if(element.expected.find(TestData::Components::query) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::query], "?" + uri->getQuery()) << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::query) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::query], "?" + uri->getQuery()) << "Raw URI was:" + element.raw;
 	
-	if(element.expected.find(TestData::Components::fragment) != element.expected.end())
-		EXPECT_EQ(element.expected[TestData::Components::fragment], "#" + uri->getFragment()) << "Raw URI was:" + element.rawURI;
+	if(element.components.find(UriComponents::Type::fragment) != element.components.end())
+		EXPECT_EQ(element.components[UriComponents::Type::fragment], "#" + uri->getFragment()) << "Raw URI was:" + element.raw;
 	
 }
 
-static std::vector<TestData::TestElement> createTestValues() {
-	TestData testData;
-
-	std::vector<std::vector<TestData::TestElement>> testElements;
-	testElements.push_back(testData.generateTestElements({TestData::Components::scheme}));
-	testElements.push_back(testData.generateTestElements({TestData::Components::scheme, TestData::Components::userinfo, TestData::Components::host}));
-	testElements.push_back(testData.generateTestElements({TestData::Components::scheme, TestData::Components::userinfo, TestData::Components::host, TestData::Components::port}));
-	testElements.push_back(testData.generateTestElements({TestData::Components::scheme, TestData::Components::userinfo, TestData::Components::host, TestData::Components::port, TestData::Components::path, TestData::Components::query, TestData::Components::fragment}));
-	testElements.push_back(testData.generateTestElements({TestData::Components::scheme, TestData::Components::path, TestData::Components::query, TestData::Components::fragment}));
+static std::vector<UriGenerator::TestURI> createTestValues() {
+	UriGenerator uriGenerator;
 	
-	std::vector<TestData::TestElement> output;
-	for(auto &testElementVector : testElements) {
-		output.insert(output.end(), testElementVector.begin(), testElementVector.end());
-	}
-	return output;
+	uriGenerator.generate({UriComponents::Type::scheme});
+	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::userinfo, UriComponents::Type::host});
+	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::userinfo, UriComponents::Type::host, UriComponents::Type::port});
+	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::userinfo, UriComponents::Type::host, UriComponents::Type::port, UriComponents::Type::path, UriComponents::Type::query, UriComponents::Type::fragment});
+	uriGenerator.generate({UriComponents::Type::scheme, UriComponents::Type::path, UriComponents::Type::query, UriComponents::Type::fragment});
+	
+	return uriGenerator.pop();
 }
 
 INSTANTIATE_TEST_SUITE_P(

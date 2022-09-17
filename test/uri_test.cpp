@@ -10,7 +10,7 @@
 
 using namespace salzaverde;
 
-class URITest2 : public testing::TestWithParam<UriGenerator::TestURI> {
+class URIParsing : public testing::TestWithParam<UriGenerator::TestURI> {
 public:
 	void SetUp() override {
 		element = GetParam();
@@ -22,7 +22,7 @@ public:
 	std::unique_ptr<URI> uri;
 };
 
-TEST_P(URITest2, Sample) {
+TEST_P(URIParsing, Sample) {
 	if(element.components.find(UriComponents::Type::scheme) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::scheme], uri->getScheme() + ":") << "Raw URI was:" + element.raw;
 	
@@ -62,12 +62,12 @@ static std::vector<UriGenerator::TestURI> createTestValues() {
 
 INSTANTIATE_TEST_SUITE_P(
 	ExampleTests,
-	URITest2,
+	URIParsing,
 	::testing::ValuesIn(createTestValues())
 );
 
 
-class URITest : public testing::Test {
+class URISetters : public testing::Test {
 public:
 	void SetUp() override {
 		uri = URI::parse(raw);
@@ -78,62 +78,62 @@ protected:
 	std::unique_ptr<URI> uri;
 };
 
-TEST_F(URITest, SetUserInfo) {
+TEST_F(URISetters, SetUserInfo) {
 	uri->setUserInfo("salzaverde");
 	EXPECT_EQ(uri->getUserInfo(), "salzaverde");
 };
 
-TEST_F(URITest, SetScheme) {
+TEST_F(URISetters, SetScheme) {
 	uri->setScheme("https");
 	EXPECT_EQ(uri->getScheme(), "https");
 };
 
-TEST_F(URITest, SetSchemeWithSuffix) {
+TEST_F(URISetters, SetSchemeWithSuffix) {
 	uri->setScheme("https://");
 	EXPECT_EQ(uri->getScheme(), "https");
 };
 
-TEST_F(URITest, SetHost) {
+TEST_F(URISetters, SetHost) {
 	uri->setHost("example2.com");
 	EXPECT_EQ(uri->getHost(), "example2.com");
 };
 
-TEST_F(URITest, SetPort) {
+TEST_F(URISetters, SetPort) {
 	uri->setPort("5678");
 	EXPECT_EQ(uri->getPort(), "5678");
 };
 
-TEST_F(URITest, SetPath) {
+TEST_F(URISetters, SetPath) {
 	uri->setPath("to/other");
 	EXPECT_EQ(uri->getPath(), "/to/other");
 };
 
-TEST_F(URITest, SetPathWithPrefix) {
+TEST_F(URISetters, SetPathWithPrefix) {
 	uri->setPath("/to/other");
 	EXPECT_EQ(uri->getPath(), "/to/other");
 };
 
-TEST_F(URITest, SetQuery) {
+TEST_F(URISetters, SetQuery) {
 	uri->setQuery("key3=value3");
 	EXPECT_EQ(uri->getQuery(), "key3=value3");
 };
 
-TEST_F(URITest, SetQueryWithPrefix) {
+TEST_F(URISetters, SetQueryWithPrefix) {
 	uri->setQuery("?key3=value3");
 	EXPECT_EQ(uri->getQuery(), "key3=value3");
 };
 
-TEST_F(URITest, SetFragment) {
+TEST_F(URISetters, SetFragment) {
     uri->setFragment("keyB=valueB");
     EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
-TEST_F(URITest, SetFragmentWithPrefix) {
+TEST_F(URISetters, SetFragmentWithPrefix) {
 	uri->setFragment("#keyB=valueB");
 	EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
-TEST_F(URITest, ToString) {
+TEST_F(URISetters, ToString) {
     EXPECT_EQ(uri->dump(), raw);
 };
 

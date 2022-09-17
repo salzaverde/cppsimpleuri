@@ -23,12 +23,12 @@ namespace salzaverde {
 			
 			//Split the authority into userinfo, host and port
 			auto authority = RFC3986Results[4].str();
-			auto authorityResults = matchRegex(authority, std::regex(R"(^(([^@]*)@)?((\[(.*)\]|[^:]+):)?(.*)?)"));
+			auto authorityResults = matchRegex(authority, std::regex(R"(^(([^@]*)@)?((\[(.*)\]|[^:]+)|(.*)):?(.*))"));
 			
 			_scheme = RFC3986Results[2].str();
 			_userinfo = authorityResults[2].str();
 			_host = authorityResults[4].str();
-			_port = authorityResults[6].str();
+			_port = authorityResults[7].str();
             _path = RFC3986Results[5].str();
             _query = RFC3986Results[7].str();
             _fragment = RFC3986Results[9].str();
@@ -104,7 +104,9 @@ namespace salzaverde {
         
         virtual std::string dump() override {
             auto raw = std::string();
-            if(! _scheme.empty()) raw += _scheme + scheme_suffix;
+			bool hasAuthority = ! _host.empty();
+			
+            if(! _scheme.empty()) raw += _scheme + (hasAuthority? scheme_suffix : ":");
 			if(! _userinfo.empty()) raw += _userinfo + userinfo_suffix;
             if(! _host.empty()) raw += _host;
             if(! _port.empty()) raw += port_prefix + _port;

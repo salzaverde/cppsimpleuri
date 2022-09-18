@@ -8,13 +8,6 @@
 #include <iostream>
 
 namespace salzaverde {
-    static const std::string scheme_suffix = "://";
-	static const std::string userinfo_suffix = "@";
-    static const std::string path_prefix = "/";
-    static const std::string port_prefix = ":";
-    static const std::string query_prefix = "?";
-    static const std::string fragment_prefix = "#";
-
     class URIImpl : public URI {
     public:
         explicit URIImpl(std::string raw) {
@@ -39,10 +32,7 @@ namespace salzaverde {
         }
         
         virtual void setScheme(const std::string &value) override {
-            if(value.ends_with(scheme_suffix))
-                _scheme = value.substr(0, value.length() - scheme_suffix.length());
-            else
-                _scheme = value;
+            _scheme = value;
         }
         
 		virtual std::string getUserInfo() override {
@@ -74,10 +64,7 @@ namespace salzaverde {
         }
         
         virtual void setPath(const std::string &value) override {
-            if(! value.starts_with(path_prefix))
-                _path = path_prefix + value;
-            else
-                _path = value;
+            _path = value;
         }
         
         virtual std::string getQuery() override {
@@ -85,10 +72,7 @@ namespace salzaverde {
         }
         
         virtual void setQuery(const std::string &value) override {
-            if(value.starts_with(query_prefix))
-                _query = value.substr(query_prefix.length());
-            else
-                _query = value;
+            _query = value;
         }
         
         virtual std::string getFragment() override {
@@ -96,23 +80,20 @@ namespace salzaverde {
         }
         
         virtual void setFragment(const std::string &value) override {
-            if(value.starts_with(fragment_prefix))
-                _fragment = value.substr(fragment_prefix.length());
-            else
-                _fragment = value;
+            _fragment = value;
         }
         
         virtual std::string dump() override {
             auto raw = std::string();
 			bool hasAuthority = ! _host.empty();
 			
-            if(! _scheme.empty()) raw += _scheme + (hasAuthority? scheme_suffix : ":");
-			if(! _userinfo.empty()) raw += _userinfo + userinfo_suffix;
+            if(! _scheme.empty()) raw += _scheme + (hasAuthority? "://" : ":");
+			if(! _userinfo.empty()) raw += _userinfo + "@";
             if(! _host.empty()) raw += _host;
-            if(! _port.empty()) raw += port_prefix + _port;
+            if(! _port.empty()) raw += ":" + _port;
             if(! _path.empty()) raw += _path;
-            if(! _query.empty()) raw += query_prefix + _query;
-            if(! _fragment.empty()) raw += fragment_prefix + _fragment;
+            if(! _query.empty()) raw += "?" + _query;
+            if(! _fragment.empty()) raw += "#" + _fragment;
             return raw;
         }
 

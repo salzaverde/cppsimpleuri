@@ -57,6 +57,8 @@ std::cout << "Port:     "   << uri.port     << std::endl;
 std::cout << "Path:     "   << uri.path     << std::endl;
 std::cout << "Query:    "   << uri.query    << std::endl;
 std::cout << "Fragment: "   << uri.fragment << std::endl;
+
+uri.dump(); //Outputs the raw uri
 ```
 
 ### Query Parsing

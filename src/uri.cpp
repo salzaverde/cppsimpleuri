@@ -18,82 +18,26 @@ namespace salzaverde {
 			auto authority = RFC3986Results[4].str();
 			auto authorityResults = matchRegex(authority, std::regex(R"(^(([^@]*)@)?((\[(.*)\]|[^:]+)|(.*)):?(.*))"));
 			
-			_scheme = RFC3986Results[2].str();
-			_userinfo = authorityResults[2].str();
-			_host = authorityResults[4].str();
-			_port = authorityResults[7].str();
-            _path = RFC3986Results[5].str();
-            _query = RFC3986Results[7].str();
-            _fragment = RFC3986Results[9].str();
-        }
-        
-        virtual std::string getScheme() override {
-            return _scheme;
-        }
-        
-        virtual void setScheme(const std::string &value) override {
-            _scheme = value;
-        }
-        
-		virtual std::string getUserInfo() override {
-			return _userinfo;
-		}
-		
-		virtual void setUserInfo(const std::string &value) override {
-			_userinfo = value;
-		}
-		
-        virtual std::string getHost() override {
-            return _host;
-        }
-        
-        virtual void setHost(const std::string &value) override {
-            _host = value;
-        }
-        
-        virtual std::string getPort() override {
-            return _port;
-        }
-        
-        virtual void setPort(const std::string &value) override {
-            _port = value;
-        }
-        
-        virtual std::string getPath() override {
-            return _path;
-        }
-        
-        virtual void setPath(const std::string &value) override {
-            _path = value;
-        }
-        
-        virtual std::string getQuery() override {
-            return _query;
-        }
-        
-        virtual void setQuery(const std::string &value) override {
-            _query = value;
-        }
-        
-        virtual std::string getFragment() override {
-            return _fragment;
-        }
-        
-        virtual void setFragment(const std::string &value) override {
-            _fragment = value;
+			scheme = RFC3986Results[2].str();
+			userinfo = authorityResults[2].str();
+			host = authorityResults[4].str();
+			port = authorityResults[7].str();
+            path = RFC3986Results[5].str();
+            query = RFC3986Results[7].str();
+            fragment = RFC3986Results[9].str();
         }
         
         virtual std::string dump() override {
             auto raw = std::string();
-			bool hasAuthority = ! _host.empty();
+			bool hasAuthority = ! host.empty();
 			
-            if(! _scheme.empty()) raw += _scheme + (hasAuthority? "://" : ":");
-			if(! _userinfo.empty()) raw += _userinfo + "@";
-            if(! _host.empty()) raw += _host;
-            if(! _port.empty()) raw += ":" + _port;
-            if(! _path.empty()) raw += _path;
-            if(! _query.empty()) raw += "?" + _query;
-            if(! _fragment.empty()) raw += "#" + _fragment;
+            if(! scheme.empty()) raw += scheme + (hasAuthority? "://" : ":");
+			if(! userinfo.empty()) raw += userinfo + "@";
+            if(! host.empty()) raw += host;
+            if(! port.empty()) raw += ":" + port;
+            if(! path.empty()) raw += path;
+            if(! query.empty()) raw += "?" + query;
+            if(! fragment.empty()) raw += "#" + fragment;
             return raw;
         }
 
@@ -103,8 +47,6 @@ namespace salzaverde {
 			std::regex_match(input, results, regex);
 			return results;
 		}
-		
-        std::string _scheme, _userinfo, _host, _port, _path, _query, _fragment;
     };
     
     std::unique_ptr<URI> URI::parse(const std::string &raw) {

@@ -24,22 +24,15 @@ namespace salzaverde {
         static std::unique_ptr<URI> parse(const std::string &raw);
         
         /**
-         * @brief Operations
+         * @brief URI Components
          */
-        virtual std::string getScheme() = 0;
-        virtual void setScheme(const std::string &value) = 0;
-		virtual std::string getUserInfo() = 0;
-		virtual void setUserInfo(const std::string &value) = 0;
-        virtual std::string getHost() = 0;
-        virtual void setHost(const std::string &value) = 0;
-        virtual std::string getPort() = 0;
-        virtual void setPort(const std::string &value) = 0;
-        virtual std::string getPath() = 0;
-        virtual void setPath(const std::string &value) = 0;
-        virtual std::string getQuery() = 0;
-        virtual void setQuery(const std::string &value) = 0;
-        virtual std::string getFragment() = 0;
-        virtual void setFragment(const std::string &value) = 0;
+        std::string scheme;
+        std::string userinfo;
+        std::string host;
+        std::string port; 
+        std::string path; 
+        std::string query; 
+        std::string fragment;
         
         /**
          * @brief Returns a string representation of the uri object

@@ -10,44 +10,29 @@ void printLine(const std::string& text) {
 }
 
 int main(int argc, char *argv[]) {
-    //Parsing
-    auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
+    //URI Parsing
+    auto myRawUri = std::string("https://salzaverde@github.io:1176/my/music?sort_by=title&before=2020#artist=rhcp");
+    std::cout << "Parsing query: "   << myRawUri << std::endl;
+
     auto uri = salzaverde::URI::parse(myRawUri);
     
-    //Access the uri's elements
-    auto scheme = uri.scheme;
-    auto host = uri.host;
-    auto port = uri.port;
-    auto path = uri.path;
-    auto queryString = uri.query;
-    auto fragment = uri.fragment;
+    std::cout << "Scheme:   "   << uri.scheme   << std::endl;
+    std::cout << "Userinfo: "   << uri.userinfo << std::endl;
+    std::cout << "Host:     "   << uri.host     << std::endl;
+    std::cout << "Port:     "   << uri.port     << std::endl;
+    std::cout << "Path:     "   << uri.path     << std::endl;
+    std::cout << "Query:    "   << uri.query    << std::endl;
+    std::cout << "Fragment: "   << uri.fragment << std::endl;
     
     //Query parsing
-    auto query = salzaverde::Query::parse(queryString);
-    query.parameters["sortby"] = "name";
-    
-    //Retrieve a query parameter value by key
-    if(query.parameters.find("sortby") != query.parameters.end())
-        auto sortbyValue = query.parameters["sortby"];
-    
-       
-    //Build a new query string in place
-    auto newQuery = salzaverde::Query({
-        {"list", "songs"},
-        {"include", "rhcp"}
-    });
+    auto query = salzaverde::Query::parse(uri.query);
+    std::cout << "Query parameters:" << std::endl;
 
-	//Replace query in an existing uri
-    uri.query = newQuery.dump();
+    for(auto &param : query.parameters) {
+        std::cout << param.first << " = " << param.second << std::endl;
+    }
     
-    //Print results
-    printLine("Parsing " + myRawUri + ":");
-    printLine("");
-    printLine("Scheme is: " + scheme);
-    printLine("Host is: " + host);
-    printLine("Port is: " + port);
-    printLine("Path is: " + path);
-    printLine("Query string is: " + queryString);
-    printLine("Fragment is: " + fragment);
-    printLine("");
+    //Query editing
+    query.parameters["sort_by"] = "length";
+    std::cout << "Query is now: " << query.dump() << std::endl;
 }

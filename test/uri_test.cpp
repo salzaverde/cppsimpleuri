@@ -88,11 +88,6 @@ TEST_F(URISetters, SetScheme) {
 	EXPECT_EQ(uri->getScheme(), "https");
 };
 
-TEST_F(URISetters, SetSchemeWithSuffix) {
-	uri->setScheme("https://");
-	EXPECT_EQ(uri->getScheme(), "https");
-};
-
 TEST_F(URISetters, SetHost) {
 	uri->setHost("example2.com");
 	EXPECT_EQ(uri->getHost(), "example2.com");
@@ -104,11 +99,6 @@ TEST_F(URISetters, SetPort) {
 };
 
 TEST_F(URISetters, SetPath) {
-	uri->setPath("to/other");
-	EXPECT_EQ(uri->getPath(), "/to/other");
-};
-
-TEST_F(URISetters, SetPathWithPrefix) {
 	uri->setPath("/to/other");
 	EXPECT_EQ(uri->getPath(), "/to/other");
 };
@@ -118,22 +108,12 @@ TEST_F(URISetters, SetQuery) {
 	EXPECT_EQ(uri->getQuery(), "key3=value3");
 };
 
-TEST_F(URISetters, SetQueryWithPrefix) {
-	uri->setQuery("?key3=value3");
-	EXPECT_EQ(uri->getQuery(), "key3=value3");
-};
-
 TEST_F(URISetters, SetFragment) {
     uri->setFragment("keyB=valueB");
     EXPECT_EQ(uri->getFragment(), "keyB=valueB");
 };
 
-TEST_F(URISetters, SetFragmentWithPrefix) {
-	uri->setFragment("#keyB=valueB");
-	EXPECT_EQ(uri->getFragment(), "keyB=valueB");
-};
-
-TEST_F(URISetters, ToString) {
+TEST_F(URISetters, Dump) {
     EXPECT_EQ(uri->dump(), raw);
 };
 

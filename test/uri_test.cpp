@@ -22,7 +22,7 @@ public:
 	URI uri;
 };
 
-TEST_P(URIParsing, Sample) {
+TEST_P(URIParsing, Parametrized) {
 	if(element.components.find(UriComponents::Type::scheme) != element.components.end())
 		EXPECT_EQ(element.components[UriComponents::Type::scheme], uri.scheme + ":") << "Raw URI was:" + element.raw;
 	
@@ -61,7 +61,7 @@ static std::vector<UriGenerator::TestURI> createTestValues() {
 }
 
 INSTANTIATE_TEST_SUITE_P(
-	ExampleTests,
+	URITests,
 	URIParsing,
 	::testing::ValuesIn(createTestValues())
 );

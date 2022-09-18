@@ -5,37 +5,42 @@
 
 #include <vector>
 #include <regex>
+#include <sstream>
 
 namespace salzaverde {
-    static bool isValidDelimiter(const std::string &delimiter) {
-        for(auto &valid : {"!", "$", "&", "'", "*", "+", ",", ";"})
-            if(delimiter == valid) return true;
+    static std::vector<std::string> split(const std::string &input, const std::string &delimiter) {
+        std::vector<std::string> output;
+        std::stringstream rawStream(input);
+        std::string match;
+        
+        while (std::getline(rawStream, match, delimiter.c_str()[0]))
+            output.push_back(match);
 
-        return false;
+        return output;
     }
 
-    static std::smatch matchRegex(const std::string &input, const std::regex &regex) {
-        std::smatch results;
-        std::regex_match(input, results, regex);
-        return results;
+    static std::pair<std::string, std::string> parseComponent(const std::string &component) {
+        auto key = component.substr(0, component.find("="));
+        if(key == component)
+            return std::make_pair(key, "");
+
+        auto value = component.substr(component.find("=") + 1);
+        return std::make_pair(key, value);
     }
 
     Query::Query(const std::map<std::string, std::string> &parameters) : parameters(parameters) {};
 
-    Query Query::parse(const std::string& queryString, const std::string &delimiter) {
-        if(queryString.empty() || ! isValidDelimiter(delimiter))
+    Query Query::parse(const std::string& raw, const std::string &delimiter) {
+        if(raw.empty())
             return Query();
 
         Query query;
-        auto components = matchRegex(queryString, std::regex("[^" + delimiter + "]+"));
+        auto components = split(raw, delimiter);
+
         for(auto &component : components) {
             //Matches the first occurance of "=" and assumes everything after that is "value"
-            auto keyValuePair = matchRegex(queryString, std::regex("(^[^=]+)=?(.*)"));
-            
-            auto key = keyValuePair[1].str();
-            auto value = keyValuePair.length() > 2? keyValuePair[2].str() : "";
-
-            query.parameters.emplace(key, value);
+            auto result = parseComponent(component);
+            query.parameters.emplace(result);
         }
 
         return query;
@@ -47,10 +52,13 @@ namespace salzaverde {
         
         std::string queryString = "";
         auto it = parameters.begin();
-        queryString += it->first + "=" + it->second;
+        queryString += it->first;
+        if(! it->second.empty()) queryString += "=" + (it->second);
         while(++it != parameters.end()) {
-            queryString += delimiter + it->first + "=" + it->second;
+            queryString += delimiter + it->first;
+            if(! it->second.empty()) queryString += "=" + (it->second);
         }
+        
         return queryString;
     }
 }

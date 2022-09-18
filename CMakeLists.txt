@@ -33,7 +33,7 @@ target_include_directories(${lib_target_name} PUBLIC
 
 ### Properties & Definitions
 set_target_properties(${lib_target_name} PROPERTIES
-    CXX_STANDARD 20
+    CXX_STANDARD 11
     CXX_STANDARD_REQUIRED ON
 )
 

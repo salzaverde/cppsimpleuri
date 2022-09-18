@@ -18,7 +18,7 @@ A modern C++ uri & query parser.
 
 ## Requirements
 -   CMake
--   C++20
+-   C++11
 
 ## Integration
 Include cppsimpleuri in your cmake project using fetchContent:

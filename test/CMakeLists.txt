@@ -70,7 +70,7 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
 
         COMMAND ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_FLAGS="-fprofile-arcs;-ftest-coverage;-fno-exceptions" -S${PROJECT_SOURCE_DIR} -B${coverage_directory}
         COMMAND ${CMAKE_COMMAND} --build ${coverage_directory}
-        COMMAND cd ${coverage_directory} && ctest --output-on-failure
+        COMMAND cd ${coverage_directory} && ctest --output-on-failure --parallel 10
 
         COMMAND ${LCOV_TOOL} --directory ${coverage_directory} --capture --output-file ${coverage_all_path} --rc lcov_branch_coverage=1
         COMMAND ${LCOV_TOOL} -e ${coverage_all_path} ${coverage_include} --output-file ${coverage_path} --rc lcov_branch_coverage=1

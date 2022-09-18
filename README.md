@@ -11,14 +11,13 @@ A modern C++ uri & query parser.
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/13cc4387adce4ebb9d24a808f63bd430)](https://app.codacy.com/gh/salzaverde/cppsimpleuri?utm_source=github.com&utm_medium=referral&utm_content=salzaverde/cppsimpleuri&utm_campaign=Badge_Grade_Settings)
 
 ## Features
--   RFC3986
+-   According to RFC3986
 -   Includes Query Parser & Builder
 -   Easy to use & understand
--   Easy to maintain & extend through unique factory pattern
+-   Comprehensively tested
 
-## Tech
+## Requirements
 -   CMake
--   GoogleTest - 100% code coverage
 -   C++20
 
 ## Integration
@@ -48,16 +47,16 @@ target_link_libraries(my_target_name PRIVATE
 #include <salzaverde/uri.h>
 using namespace salzaverde;
 
-auto myRawUri = std::string("https://myHomepage.com:1176/my/music?added=last#artist=rhcp");
-auto uri = URI::parse(myRawUri);
-    
-//Access the uri's elements
-auto scheme = uri->getScheme();
-auto host = uri->getHost();
-auto port = uri->getPort();
-auto path = uri->getPath();
-auto query = uri->getQuery();
-auto fragment = uri->getFragment();
+auto myRawUri = std::string("https://salzaverde@github.io:1176/my/music?sort_by=title&before=2020#artist=rhcp");
+auto uri = salzaverde::URI::parse(myRawUri);
+
+std::cout << "Scheme:   "   << uri.scheme   << std::endl;
+std::cout << "Userinfo: "   << uri.userinfo << std::endl;
+std::cout << "Host:     "   << uri.host     << std::endl;
+std::cout << "Port:     "   << uri.port     << std::endl;
+std::cout << "Path:     "   << uri.path     << std::endl;
+std::cout << "Query:    "   << uri.query    << std::endl;
+std::cout << "Fragment: "   << uri.fragment << std::endl;
 ```
 
 ### Query Parsing
@@ -65,33 +64,29 @@ auto fragment = uri->getFragment();
 #include <salzaverde/query.h>
 using namespace salzaverde;
 
-auto queryString = "artistfilter=rhcp&sortby=name";
-auto query = Query::parse(queryString);
+auto raw = "sort_by=title&before=2020"
+auto query = salzaverde::Query::parse(raw);
 
-//Get value for key
-auto paramValue = query->get("artistfilter");
-
-//Modify
-query->erase("artistfilter");
-query->set("sortby", "duration");
-
-//List keys
-auto keys = query->listKeys();
+query.parameters[sort_by] == "title"; //true
 ```
 
-### Query Building
+### Query Editing
+```cpp
+query.parameters["sort_by"] = "length";
+query.dump(); //Query is now: "sort_by=length&before=2020"
+```
+
+### Query Construction
 ```cpp
 #include <salzaverde/query.h>
 using namespace salzaverde;
 
-//Step by step
 std::map<std::string, std::string> parameters;
 parameters.emplace("artistfilter", "rhcp");
 parameters.emplace("sortby", "name");
-auto query = Query::build(parameters);
-	
-//In place
-auto query = Query::build({
+auto query1 = Query::build(parameters);
+
+auto query2 = Query::build({
     {"artistfilter", "rhcp"},
     {"sortby", "name"}
 });

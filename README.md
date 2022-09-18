@@ -69,7 +69,7 @@ using namespace salzaverde;
 auto raw = "sort_by=title&before=2020"
 auto query = salzaverde::Query::parse(raw);
 
-query.parameters[sort_by] == "title"; //true
+query.parameters["sort_by"] == "title"; //true
 ```
 
 ### Query Editing

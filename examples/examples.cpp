@@ -15,37 +15,30 @@ int main(int argc, char *argv[]) {
     auto uri = salzaverde::URI::parse(myRawUri);
     
     //Access the uri's elements
-    auto scheme = uri->getScheme();
-    auto host = uri->getHost();
-    auto port = uri->getPort();
-    auto path = uri->getPath();
-    auto queryString = uri->getQuery();
-    auto fragment = uri->getFragment();
+    auto scheme = uri.scheme;
+    auto host = uri.host;
+    auto port = uri.port;
+    auto path = uri.path;
+    auto queryString = uri.query;
+    auto fragment = uri.fragment;
     
     //Query parsing
     auto query = salzaverde::Query::parse(queryString);
-    query->set("sortby", "name");
+    query.parameters["sortby"] = "name";
     
     //Retrieve a query parameter value by key
-    auto sortbyValue = query->get("sortby");
+    if(query.parameters.find("sortby") != query.parameters.end())
+        auto sortbyValue = query.parameters["sortby"];
     
-    //A value for this key might not exist
-    if(! sortbyValue) {
-        //Do some error handling
-    }
        
     //Build a new query string in place
-    auto newQuery = salzaverde::Query::build({
+    auto newQuery = salzaverde::Query({
         {"list", "songs"},
         {"include", "rhcp"}
     });
 
-    //Check if a key exists
-    auto containsListKey = newQuery->contains("list");
-    auto keys = query->listKeys(); //Returns a set of keys
-
-	//And replace it in an existing uri
-    uri->setQuery(newQuery->dump());
+	//Replace query in an existing uri
+    uri.query = newQuery.dump();
     
     //Print results
     printLine("Parsing " + myRawUri + ":");
@@ -56,16 +49,5 @@ int main(int argc, char *argv[]) {
     printLine("Path is: " + path);
     printLine("Query string is: " + queryString);
     printLine("Fragment is: " + fragment);
-    printLine("");
-    
-    printLine("Parsing Query: " + uri->getQuery());
-	
-	for(auto &key : keys) {
-		printLine("Query contains key: " + key);
-	}
-	
-    printLine("Query contains \"list\" key: " + (containsListKey? std::string("true") : std::string("false")));
-    printLine("");
-    printLine("Uri with replaced QueryString: " + uri->dump());
     printLine("");
 }

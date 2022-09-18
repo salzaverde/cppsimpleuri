@@ -2,35 +2,46 @@
 // MIT License
 
 #include <salzaverde/query.h>
+
 #include <vector>
+#include <regex>
 
 namespace salzaverde {
+    static bool isValidDelimiter(const std::string &delimiter) {
+        for(auto &valid : {"!", "$", "&", "'", "*", "+", ",", ";"})
+            if(delimiter == valid) return true;
+
+        return false;
+    }
+
+    static std::smatch matchRegex(const std::string &input, const std::regex &regex) {
+        std::smatch results;
+        std::regex_match(input, results, regex);
+        return results;
+    }
+
     Query::Query(const std::map<std::string, std::string> &parameters) : parameters(parameters) {};
 
-    Query Query::parse(const std::string& queryString) {
-        if(queryString.empty())
+    Query Query::parse(const std::string& queryString, const std::string &delimiter) {
+        if(queryString.empty() || ! isValidDelimiter(delimiter))
             return Query();
 
         Query query;
-        std::string remaining = queryString;
-        
-        std::vector<std::string> keyValuePairs;
-        size_t pos = 0;
-        while(pos != std::string::npos) {
-            pos = remaining.find("&");
-            keyValuePairs.push_back(remaining.substr(0, pos));
-            remaining = remaining.substr(pos + 1);
-        }
-        
-        for(auto &pair : keyValuePairs) {
-            pos = pair.find("=");
-            query.parameters.emplace(pair.substr(0, pos), pair.substr(pos + 1));
+        auto components = matchRegex(queryString, std::regex("[^" + delimiter + "]+"));
+        for(auto &component : components) {
+            //Matches the first occurance of "=" and assumes everything after that is "value"
+            auto keyValuePair = matchRegex(queryString, std::regex("(^[^=]+)=?(.*)"));
+            
+            auto key = keyValuePair[1].str();
+            auto value = keyValuePair.length() > 2? keyValuePair[2].str() : "";
+
+            query.parameters.emplace(key, value);
         }
 
         return query;
     }
 
-    std::string Query::dump() {
+    std::string Query::dump(const std::string &delimiter) {
         if(parameters.empty())
             return "";
         
@@ -38,7 +49,7 @@ namespace salzaverde {
         auto it = parameters.begin();
         queryString += it->first + "=" + it->second;
         while(++it != parameters.end()) {
-            queryString += "&" + it->first + "=" + it->second;
+            queryString += delimiter + it->first + "=" + it->second;
         }
         return queryString;
     }

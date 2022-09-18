@@ -3,10 +3,7 @@
 
 #pragma once
 
-#include <memory>
 #include <map>
-#include <optional>
-#include <set>
 #include <string>
 
 namespace salzaverde {
@@ -36,12 +33,14 @@ namespace salzaverde {
         
         /**
          * @brief Parses a raw query string
+         * @param delimiter valid delimiters are: "!" / "$" / "&" / "'" / "*" / "+" / "," / ";"
          */
-        static Query parse(const std::string &raw);
+        static Query parse(const std::string &raw, const std::string &delimiter = "&");
         
         /**
          * @brief Returns a query string
+         * @param delimiter valid delimiters are: "!" / "$" / "&" / "'" / "*" / "+" / "," / ";"
          */
-        virtual std::string dump();
+        virtual std::string dump(const std::string &delimiter = "&");
     };
 }

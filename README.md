@@ -48,7 +48,7 @@ target_link_libraries(my_target_name PRIVATE
 using namespace salzaverde;
 
 auto myRawUri = std::string("https://salzaverde@github.io:1176/my/music?sort_by=title&before=2020#artist=rhcp");
-auto uri = salzaverde::URI::parse(myRawUri);
+auto uri = URI::parse(myRawUri);
 
 std::cout << "Scheme:   "   << uri.scheme   << std::endl;
 std::cout << "Userinfo: "   << uri.userinfo << std::endl;
@@ -67,15 +67,23 @@ uri.dump(); //Outputs the raw uri
 using namespace salzaverde;
 
 auto raw = "sort_by=title&before=2020"
-auto query = salzaverde::Query::parse(raw);
+auto query = Query::parse(raw);
 
-query.parameters["sort_by"] == "title"; //true
+query["sort_by"] == "title"; //true
 ```
+### Query Info
+```cpp
+auto keys = query.list(); //Contains "sort_by", "before"
+query.contains("sort_by"); //true
 
+```
 ### Query Editing
 ```cpp
-query.parameters["sort_by"] = "length";
+query["sort_by"] = "length";
 query.dump(); //Query is now: "sort_by=length&before=2020"
+
+query.erase("sort_by");
+query.dump(); //Query is now: "before=2020"
 ```
 
 ### Query Construction
@@ -83,9 +91,9 @@ query.dump(); //Query is now: "sort_by=length&before=2020"
 #include <salzaverde/query.h>
 using namespace salzaverde;
 
-std::map<std::string, std::string> parameters;
-parameters.emplace("artistfilter", "rhcp");
-parameters.emplace("sortby", "name");
+std::vector<std::pair<Query::Key, Query::Value>> parameters;
+parameters.push_back({"artistfilter", "rhcp"});
+parameters.push_back({"sortby", "name"});
 auto query1 = Query::build(parameters);
 
 auto query2 = Query::build({

@@ -40,10 +40,14 @@ namespace salzaverde {
     }
     
     void Query::erase(const Key &key) {
-        for(auto it = _order.begin(); it != _order.end(); ++it) {
-            if(*it == key) it = _order.erase(it);
+		auto it = _order.begin();
+        while(it != _order.end()) {
+			if(*it == key) {
+				it = _order.erase(it);
+				_parameters.erase(key);
+			}
+			else it++;
         }
-        _parameters.erase(key);
     }
     
     bool Query::contains(const Key &key) {

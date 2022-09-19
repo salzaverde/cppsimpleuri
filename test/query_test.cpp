@@ -64,22 +64,60 @@ TEST_P(QueryParsing, Parametrized) {
     EXPECT_EQ(query.dump(testData.delimiter), testData.raw);
 
     for(auto &component : testData.components) {
-        EXPECT_TRUE(query.parameters.find(component.first) != query.parameters.end()) << "Tried to parse:" + testData.raw + ", Key: " + component.first;
-        EXPECT_EQ(query.parameters[component.first], component.second);
+        EXPECT_EQ(query[component.first], component.second);
     }
 }
 
 INSTANTIATE_TEST_SUITE_P(
-	QueryTests,
-	QueryParsing,
-	::testing::ValuesIn(TestData::generate())
+    QueryTests,
+    QueryParsing,
+    ::testing::ValuesIn(TestData::generate())
 );
 
-TEST(QueryTest, Build) {
-    std::map<std::string, std::string> params;
-    params.emplace("key1", "val1");
-    params.emplace("key2", "val2");
+TEST(QueryModification, Build) {
+    std::vector<std::pair<Query::Key, Query::Value>> params;
+    params.push_back({"key1", "val1"});
+    params.push_back({"key2", "val2"});
+
     auto query = Query(params);
-    
     EXPECT_EQ(query.dump(), "key1=val1&key2=val2");
 }
+
+TEST(QueryModification, Order) {
+    auto raw = "c=1&a=2&b=3";
+    auto query = Query::parse(raw);
+    
+    EXPECT_EQ(query.dump(), raw);
+}
+
+TEST(QueryModification, Value) {
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    query["b"] = "4";
+    EXPECT_EQ(query.dump(), "b=4&a=3");
+}
+
+TEST(QueryModification, Erase) {
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    query.erase("b");
+    EXPECT_EQ(query.dump(), "a=3");
+}
+
+TEST(QueryModification, Contains) {
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    EXPECT_TRUE(query.contains("b"));
+    EXPECT_TRUE(query.contains("a"));
+}
+
+TEST(QueryModification, List) {
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    auto list = query.list();
+    
+    EXPECT_EQ(list.size(), 2);
+    EXPECT_EQ(list[0], "b");
+    EXPECT_EQ(list[1], "a");
+}
+

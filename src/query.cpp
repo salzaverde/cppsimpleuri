@@ -28,8 +28,32 @@ namespace salzaverde {
         return std::make_pair(key, value);
     }
 
-    Query::Query(const std::map<std::string, std::string> &parameters) : parameters(parameters) {};
+    Query::Query(const std::vector<std::pair<Key, Value>> &parameters) {
+        for(auto &param : parameters) {
+            _order.push_back(param.first);
+            _parameters.emplace(param);
+        }
+    };
 
+    Query::Value& Query::operator[] (const Key &key) {
+        return _parameters[key];
+    }
+    
+    void Query::erase(const Key &key) {
+        for(auto it = _order.begin(); it != _order.end(); ++it) {
+            if(*it == key) it = _order.erase(it);
+        }
+        _parameters.erase(key);
+    }
+    
+    bool Query::contains(const Key &key) {
+        return _parameters.find(key) != _parameters.end();
+    }
+    
+    std::vector<Query::Key> Query::list() {
+        return _order;
+    }
+    
     Query Query::parse(const std::string& raw, const std::string &delimiter) {
         if(raw.empty())
             return Query();
@@ -40,25 +64,27 @@ namespace salzaverde {
         for(auto &component : components) {
             //Matches the first occurance of "=" and assumes everything after that is "value"
             auto result = parseComponent(component);
-            query.parameters.emplace(result);
+            query._order.push_back(result.first);
+            query._parameters.emplace(result);
         }
 
         return query;
     }
 
     std::string Query::dump(const std::string &delimiter) {
-        if(parameters.empty())
+        if(_parameters.empty())
             return "";
         
         std::string queryString = "";
-        auto it = parameters.begin();
-        queryString += it->first;
-        if(! it->second.empty()) queryString += "=" + (it->second);
-        while(++it != parameters.end()) {
-            queryString += delimiter + it->first;
-            if(! it->second.empty()) queryString += "=" + (it->second);
+        auto it = _order.begin();
+        while(it != _order.end()) {
+            if(it != _order.begin()) queryString += delimiter;
+            if(_parameters[*it] == "")
+                queryString += *it;
+            else
+                queryString += *it + "=" + _parameters[*it];
+            it++;
         }
-        
         return queryString;
     }
 }

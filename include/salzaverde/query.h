@@ -4,6 +4,7 @@
 #pragma once
 
 #include <map>
+#include <vector>
 #include <string>
 
 namespace salzaverde {
@@ -16,11 +17,9 @@ namespace salzaverde {
      */
     struct Query {
     public:
-        /**
-         * @brief The query parameters
-         */
-        std::map<std::string, std::string> parameters {};
-
+        typedef std::string Key;
+        typedef std::string Value;
+        
         /**
          * @brief Construct an empty query object
          */
@@ -29,7 +28,27 @@ namespace salzaverde {
         /**
          * @brief Construct a query object from a map of parameters
          */
-        explicit Query(const std::map<std::string, std::string> &parameters);
+        explicit Query(const std::vector<std::pair<Key, Value>> &parameters);
+        
+        /**
+         * @brief Access values by key
+         */
+        Value& operator[] (const Key &key);
+        
+        /**
+         * @brief Erase values by key
+         */
+        void erase(const Key &key);
+        
+        /**
+         * @brief Returns true if key exists
+         */
+        bool contains(const Key &key);
+        
+        /**
+         * @brief Returns all keys
+         */
+        std::vector<Key> list();
         
         /**
          * @brief Parses a raw query string
@@ -42,5 +61,9 @@ namespace salzaverde {
          * @param delimiter valid delimiters are: "!" / "$" / "&" / "'" / "*" / "+" / "," / ";"
          */
         virtual std::string dump(const std::string &delimiter = "&");
+        
+    private:
+        std::map<Key, Value> _parameters {};
+        std::vector<Key> _order {};
     };
 }

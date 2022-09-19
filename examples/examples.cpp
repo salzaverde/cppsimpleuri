@@ -25,14 +25,25 @@ int main(int argc, char *argv[]) {
     std::cout << "Fragment: "   << uri.fragment << std::endl;
     
     //Query parsing
-    auto query = salzaverde::Query::parse(uri.query);
+    auto queryString = "sort_by=title&before=2020";
+    auto query = salzaverde::Query::parse(queryString);
     std::cout << "Query parameters:" << std::endl;
 
-    for(auto &param : query.parameters) {
-        std::cout << param.first << " = " << param.second << std::endl;
+    //list keys
+    for(auto &key : query.list()) {
+        std::cout << "Found key: " << key << std::endl;
     }
     
-    //Query editing
-    query.parameters["sort_by"] = "length";
+    //edit
+    query["sort_by"] = "length";
+    std::cout << "Query is now: " << query.dump() << std::endl;
+    
+    //contains
+    if(query.contains("sort_by")) {
+        std::cout << "Query contains key \"sort_by\"!" << std::endl;
+    }
+    
+    //erase
+    query.erase("sort_by");
     std::cout << "Query is now: " << query.dump() << std::endl;
 }

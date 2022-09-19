@@ -31,7 +31,7 @@ include(FetchContent)
 FetchContent_Declare(
     cppsimpleuri
     GIT_REPOSITORY https://github.com/salzaverde/cppsimpleuri.git
-    GIT_TAG v1.0.0
+    GIT_TAG v2.1.0
 )
 FetchContent_MakeAvailable(cppsimpleuri)
 

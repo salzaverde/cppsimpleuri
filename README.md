@@ -94,9 +94,9 @@ using namespace salzaverde;
 std::vector<std::pair<Query::Key, Query::Value>> parameters;
 parameters.push_back({"artistfilter", "rhcp"});
 parameters.push_back({"sortby", "name"});
-auto query1 = Query::build(parameters);
+auto query1 = Query(parameters);
 
-auto query2 = Query::build({
+auto query2 = Query({
     {"artistfilter", "rhcp"},
     {"sortby", "name"}
 });

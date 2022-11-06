@@ -7,7 +7,6 @@
 #include <config/uri_components.h>
 #include <detail/uri_generator.h>
 
-
 using namespace salzaverde;
 
 class URIParsing : public testing::TestWithParam<UriGenerator::TestURI> {

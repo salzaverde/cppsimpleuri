@@ -73,8 +73,8 @@ namespace salzaverde {
 		}
 	};
 
-	static bool isUnreserved(const char* character) {
-		auto regex = Regex(std::regex(R"([a-zA-Z0-9]|[-._~])"));
+	static bool isUnreserved(const char* character, const std::string &excludedCharacters) {
+		auto regex = Regex(std::regex("([a-zA-Z0-9]|[" + excludedCharacters + "])"));
 		auto matches = regex.search(std::string(character));
 		if(matches.size() > 0 && matches[0].content[0] == *character) 
 			return true;
@@ -82,10 +82,10 @@ namespace salzaverde {
 		return false;
 	}
 
-	std::string URLEncoding::encode(const std::string &raw) {
+	std::string URLEncoding::encode(const std::string &raw, const std::string &excludedCharacters) {
 		std::string result = "";
 		for(auto character : raw) {
-			if(isUnreserved(&character))
+			if(isUnreserved(&character, excludedCharacters))
 				result += character;
 			else
 				result += "%" + Conversions::charToHex(character);

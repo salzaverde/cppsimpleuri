@@ -7,7 +7,7 @@
 
 namespace salzaverde {
 	struct URLEncoding {
-		static std::string encode(const std::string &raw);
+		static std::string encode(const std::string &raw, const std::string &excludedCharacters = "-._~");
 		static std::string decode(const std::string &encoded);
 	};
 }

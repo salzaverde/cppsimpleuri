@@ -6,6 +6,13 @@
 
 using namespace salzaverde;
 
+TEST(URLDecoding, Empty) {
+	auto hexString = std::string("");
+	auto result = URLEncoding::decode(hexString);
+
+	EXPECT_EQ(result, "");
+}
+
 TEST(URLDecoding, Space) {
 	auto hexString = std::string("%20");
 	auto result = URLEncoding::decode(hexString);
@@ -41,23 +48,37 @@ TEST(URLDecoding, CopyrightCharacter) {
 	EXPECT_EQ(result, "©");
 }
 
+TEST(URLEncoding, Empty) {
+	auto rawString = std::string("");
+	auto result = URLEncoding::encode(rawString);
+
+	EXPECT_EQ(result, "");
+}
+
 TEST(URLEncoding, CopyrightCharacter) {
-	auto hexString = std::string("©");
-	auto result = URLEncoding::encode(hexString);
+	auto rawString = std::string("©");
+	auto result = URLEncoding::encode(rawString);
 
 	EXPECT_EQ(result, "%c2%a9");
 }
 
 TEST(URLDecoding, CopyrightAddress) {
-	auto hexString = std::string("%c2%a9salzaverde%40github.com");
-	auto result = URLEncoding::decode(hexString);
+	auto rawString = std::string("%c2%a9salzaverde%40github.com");
+	auto result = URLEncoding::decode(rawString);
 
 	EXPECT_EQ(result, "©salzaverde@github.com");
 }
 
 TEST(URLEncoding, CopyrightAddress) {
-	auto hexString = std::string("©salzaverde@github.com");
-	auto result = URLEncoding::encode(hexString);
+	auto rawString = std::string("©salzaverde@github.com");
+	auto result = URLEncoding::encode(rawString);
 
 	EXPECT_EQ(result, "%c2%a9salzaverde%40github.com");
+}
+
+TEST(URLEncoding, UseOtherExcludedCharacters) {
+	auto rawString = std::string("/some/path/");
+	auto result = URLEncoding::encode(rawString, "-._~/");
+
+	EXPECT_EQ(result, "/some/path/");
 }

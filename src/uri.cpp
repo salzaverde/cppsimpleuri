@@ -2,6 +2,7 @@
 // MIT License
 
 #include <salzaverde/uri.h>
+#include <salzaverde/detail/encoder.h>
 #include <regex>
 
 #include <iostream>
@@ -30,13 +31,29 @@ namespace salzaverde {
         uri.query = RFC3986Results[7].str();
         uri.fragment = RFC3986Results[9].str();
 
+        uri.scheme = URLEncoding::decode(uri.scheme);
+        uri.userinfo = URLEncoding::decode(uri.userinfo);
+        uri.host = URLEncoding::decode(uri.host);
+        uri.port = URLEncoding::decode(uri.port);
+        uri.path = URLEncoding::decode(uri.path);
+        uri.query = URLEncoding::decode(uri.query);
+        uri.fragment = URLEncoding::decode(uri.fragment);
+
         return uri;
     }
     
     std::string URI::dump() {
         auto raw = std::string();
         bool hasAuthority = ! host.empty();
-        
+
+        scheme = URLEncoding::encode(scheme, "-._~+");
+        userinfo = URLEncoding::encode(userinfo);
+        host = URLEncoding::encode(host, "-.:\\[\\]");
+        port = URLEncoding::encode(port, "");
+        path = URLEncoding::encode(path, "-._~@/:+");
+        query = URLEncoding::encode(query, "-._~?/=&");
+        fragment = URLEncoding::encode(fragment, "-._~?/=&");
+
         if(! scheme.empty()) raw += scheme + (hasAuthority? "://" : ":");
         if(! userinfo.empty()) raw += userinfo + "@";
         if(! host.empty()) raw += host;

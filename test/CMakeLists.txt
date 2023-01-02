@@ -59,7 +59,9 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
 
     set(coverage_include
         ${PROJECT_SOURCE_DIR}/include/salzaverde/*.h
+        ${PROJECT_SOURCE_DIR}/include/salzaverde/detail/*.h
         ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/detail/*.cpp
     )
 
     set(coverage_directory "${PROJECT_BINARY_DIR}/code_coverage")

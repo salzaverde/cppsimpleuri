@@ -16,7 +16,7 @@ namespace salzaverde {
             std::vector<std::string> groups {};
         };
         
-        Regex(const std::regex& regex) : _regex(regex) {}
+        explicit Regex(const std::regex& regex) : _regex(regex) {}
         
         std::vector<Match> search(const std::string& input) {
             std::vector<Match> matches;

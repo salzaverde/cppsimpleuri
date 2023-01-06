@@ -75,7 +75,7 @@ namespace salzaverde {
 
     static bool isUnreserved(const char* character, const std::string &excludedCharacters) {
         auto regex = Regex(std::regex("([a-zA-Z0-9]|[" + excludedCharacters + "])"));
-        auto matches = regex.search(std::string(character));
+        auto matches = regex.search(std::string(character, 1));
         if(matches.size() > 0 && matches[0].content[0] == *character) 
             return true;
 

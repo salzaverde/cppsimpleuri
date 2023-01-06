@@ -16,8 +16,6 @@ std::string toRaw(const std::map<std::string, std::string> &componentsToUse, con
     std::string output;
     auto it = componentsToUse.begin();
 
-    bool hasValue = ! it->second.empty();
-
     output += it->first;
     if(! it->second.empty()) output += "=" + (it->second);
     while(++it != componentsToUse.end()) {

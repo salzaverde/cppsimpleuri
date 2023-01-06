@@ -105,10 +105,10 @@ TEST(QueryModification, Erase) {
 }
 
 TEST(QueryModification, EraseNonExistent) {
-	auto raw = "b=1&a=3";
-	auto query = Query::parse(raw);
-	query.erase("c");
-	EXPECT_EQ(query.dump(), "b=1&a=3");
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    query.erase("c");
+    EXPECT_EQ(query.dump(), "b=1&a=3");
 }
 
 TEST(QueryModification, Contains) {

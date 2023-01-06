@@ -6,7 +6,7 @@
 #include <iostream>
 #include <regex>
 
-static std::string hexEntries = "0123456789abcdef";
+static const std::string hexEntries = "0123456789abcdef";
 
 namespace salzaverde {
 	class Regex {

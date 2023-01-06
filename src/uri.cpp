@@ -31,14 +31,7 @@ namespace salzaverde {
         uri.query = RFC3986Results[7].str();
         uri.fragment = RFC3986Results[9].str();
 
-        uri.scheme = URLEncoding::decode(uri.scheme);
-        uri.userinfo = URLEncoding::decode(uri.userinfo);
-        uri.host = URLEncoding::decode(uri.host);
-        uri.port = URLEncoding::decode(uri.port);
-        uri.path = URLEncoding::decode(uri.path);
-        uri.query = URLEncoding::decode(uri.query);
-        uri.fragment = URLEncoding::decode(uri.fragment);
-
+        uri.decode();
         return uri;
     }
     
@@ -46,13 +39,7 @@ namespace salzaverde {
         auto raw = std::string();
         bool hasAuthority = ! host.empty();
 
-        scheme = URLEncoding::encode(scheme, "-._~+");
-        userinfo = URLEncoding::encode(userinfo);
-        host = URLEncoding::encode(host, "-.:\\[\\]");
-        port = URLEncoding::encode(port, "");
-        path = URLEncoding::encode(path, "-._~@/:+");
-        query = URLEncoding::encode(query, "-._~?/=&");
-        fragment = URLEncoding::encode(fragment, "-._~?/=&");
+        encode();
 
         if(! scheme.empty()) raw += scheme + (hasAuthority? "://" : ":");
         if(! userinfo.empty()) raw += userinfo + "@";
@@ -61,6 +48,29 @@ namespace salzaverde {
         if(! path.empty()) raw += path;
         if(! query.empty()) raw += "?" + query;
         if(! fragment.empty()) raw += "#" + fragment;
+
         return raw;
+    }
+
+    void URI::encode() {
+        //Encoding is applied according to RFC3986
+
+        scheme = URLEncoding::encode(scheme, "-._~+");
+        userinfo = URLEncoding::encode(userinfo);
+        host = URLEncoding::encode(host, "-.:\\[\\]");
+        port = URLEncoding::encode(port, "");
+        path = URLEncoding::encode(path, "-._~@/:+");
+        query = URLEncoding::encode(query, "-._~?/=&");
+        fragment = URLEncoding::encode(fragment, "-._~?/=&");
+    }
+
+    void URI::decode() {
+        scheme = URLEncoding::decode(scheme);
+        userinfo = URLEncoding::decode(userinfo);
+        host = URLEncoding::decode(host);
+        port = URLEncoding::decode(port);
+        path = URLEncoding::decode(path);
+        query = URLEncoding::decode(query);
+        fragment = URLEncoding::decode(fragment);
     }
 }

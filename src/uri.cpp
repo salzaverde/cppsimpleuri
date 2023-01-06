@@ -2,6 +2,7 @@
 // MIT License
 
 #include <salzaverde/uri.h>
+#include <salzaverde/detail/encoder.h>
 #include <regex>
 
 #include <iostream>
@@ -30,13 +31,16 @@ namespace salzaverde {
         uri.query = RFC3986Results[7].str();
         uri.fragment = RFC3986Results[9].str();
 
+        uri.decode();
         return uri;
     }
     
     std::string URI::dump() {
         auto raw = std::string();
         bool hasAuthority = ! host.empty();
-        
+
+        encode();
+
         if(! scheme.empty()) raw += scheme + (hasAuthority? "://" : ":");
         if(! userinfo.empty()) raw += userinfo + "@";
         if(! host.empty()) raw += host;
@@ -44,6 +48,29 @@ namespace salzaverde {
         if(! path.empty()) raw += path;
         if(! query.empty()) raw += "?" + query;
         if(! fragment.empty()) raw += "#" + fragment;
+
         return raw;
+    }
+
+    void URI::encode() {
+        //Encoding is applied according to RFC3986
+
+        scheme = URLEncoding::encode(scheme, "-._~+");
+        userinfo = URLEncoding::encode(userinfo);
+        host = URLEncoding::encode(host, "-.:\\[\\]");
+        port = URLEncoding::encode(port, "");
+        path = URLEncoding::encode(path, "-._~@/:+");
+        query = URLEncoding::encode(query, "-._~?/=&");
+        fragment = URLEncoding::encode(fragment, "-._~?/=&");
+    }
+
+    void URI::decode() {
+        scheme = URLEncoding::decode(scheme);
+        userinfo = URLEncoding::decode(userinfo);
+        host = URLEncoding::decode(host);
+        port = URLEncoding::decode(port);
+        path = URLEncoding::decode(path);
+        query = URLEncoding::decode(query);
+        fragment = URLEncoding::decode(fragment);
     }
 }

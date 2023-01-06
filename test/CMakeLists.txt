@@ -23,6 +23,7 @@ add_executable(${target_name})
 target_sources(${target_name} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/uri_test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/query_test.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/encoder_test.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/config/uri_components.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/detail/cartesian_product.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/detail/uri_generator.h"
@@ -58,7 +59,9 @@ if(SIMPLEURI_LIB_CODE_COVERAGE)
 
     set(coverage_include
         ${PROJECT_SOURCE_DIR}/include/salzaverde/*.h
+        ${PROJECT_SOURCE_DIR}/include/salzaverde/detail/*.h
         ${PROJECT_SOURCE_DIR}/src/*.cpp
+        ${PROJECT_SOURCE_DIR}/src/detail/*.cpp
     )
 
     set(coverage_directory "${PROJECT_BINARY_DIR}/code_coverage")

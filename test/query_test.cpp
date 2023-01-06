@@ -16,8 +16,6 @@ std::string toRaw(const std::map<std::string, std::string> &componentsToUse, con
     std::string output;
     auto it = componentsToUse.begin();
 
-    bool hasValue = ! it->second.empty();
-
     output += it->first;
     if(! it->second.empty()) output += "=" + (it->second);
     while(++it != componentsToUse.end()) {
@@ -105,10 +103,10 @@ TEST(QueryModification, Erase) {
 }
 
 TEST(QueryModification, EraseNonExistent) {
-	auto raw = "b=1&a=3";
-	auto query = Query::parse(raw);
-	query.erase("c");
-	EXPECT_EQ(query.dump(), "b=1&a=3");
+    auto raw = "b=1&a=3";
+    auto query = Query::parse(raw);
+    query.erase("c");
+    EXPECT_EQ(query.dump(), "b=1&a=3");
 }
 
 TEST(QueryModification, Contains) {

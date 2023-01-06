@@ -19,12 +19,14 @@ add_library(${lib_target_name} STATIC)
 target_sources(${lib_target_name} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/src/uri.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/query.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/detail/encoder.cpp"
 )
 
 #headers
 target_sources(${lib_target_name} PRIVATE
     "${CMAKE_CURRENT_SOURCE_DIR}/include/salzaverde/uri.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/include/salzaverde/query.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/salzaverde/detail/encoder.h"
 )
 
 target_include_directories(${lib_target_name} PUBLIC 
@@ -33,7 +35,7 @@ target_include_directories(${lib_target_name} PUBLIC
 
 ### Properties & Definitions
 set_target_properties(${lib_target_name} PROPERTIES
-    CXX_STANDARD 11
+    CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
 

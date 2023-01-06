@@ -35,5 +35,9 @@ namespace salzaverde {
          * @brief Returns a raw URI
          */
         std::string dump();
+    
+    private:
+        void encode();
+        void decode();
     };
 }

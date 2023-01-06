@@ -40,13 +40,13 @@ namespace salzaverde {
     }
     
     void Query::erase(const Key &key) {
-		auto it = _order.begin();
+        auto it = _order.begin();
         while(it != _order.end()) {
-			if(*it == key) {
-				it = _order.erase(it);
-				_parameters.erase(key);
-			}
-			else it++;
+            if(*it == key) {
+                it = _order.erase(it);
+                _parameters.erase(key);
+            }
+            else it++;
         }
     }
     

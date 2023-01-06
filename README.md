@@ -13,12 +13,13 @@ A modern C++ uri & query parser.
 ## Features
 -   According to RFC3986
 -   Includes Query Parser & Builder
+-   Includes percent-encoding & -decoding
 -   Easy to use & understand
 -   Comprehensively tested
 
 ## Requirements
 -   CMake
--   C++11
+-   C++14
 
 ## Integration
 Include cppsimpleuri in your cmake project using fetchContent:

@@ -3,6 +3,7 @@
 
 #include <salzaverde/detail/encoder.h>
 
+#include <cstdint>
 #include <iostream>
 #include <regex>
 

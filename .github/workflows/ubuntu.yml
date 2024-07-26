@@ -41,9 +41,9 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} --target code_coverage
       
     - name: Upload to codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
-        files: ${{github.workspace}}/build/code_coverage/coverage.txt
+        files: ${{github.workspace}}/build/code_coverage/coverage.xml
         fail_ci_if_error: true
         verbose: true
         
@@ -51,5 +51,5 @@ jobs:
       uses: codacy/codacy-coverage-reporter-action@v1.3.0
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-        coverage-reports: ${{github.workspace}}/build/code_coverage/coverage.txt
+        coverage-reports: ${{github.workspace}}/build/code_coverage/coverage.xml
       
